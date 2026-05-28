@@ -9,7 +9,7 @@ export default function Footer() {
             Plena
           </div>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(245,240,232,0.45)", lineHeight: 1.75, maxWidth: "260px" }}>
-            Nutrición diseñada con propósito. Chef profesional, nutriólogo certificado y entrega a domicilio en Guadalajara.
+            Nutrición con propósito. Chef profesional, nutriólogo certificado y entrega a domicilio en Guadalajara.
           </p>
         </div>
         <div>
