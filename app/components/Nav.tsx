@@ -2,9 +2,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const S: React.CSSProperties = {};
-void S;
-
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -13,37 +10,40 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  const nav: React.CSSProperties = {
-    position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-    padding: "0 2rem", height: "64px", display: "flex",
-    alignItems: "center", justifyContent: "space-between",
-    background: scrolled ? "rgba(248,250,245,0.95)" : "transparent",
-    backdropFilter: scrolled ? "blur(16px)" : "none",
-    borderBottom: scrolled ? "0.5px solid rgba(15,31,18,0.08)" : "none",
-    transition: "all 0.3s",
-  };
-
-  const logoWrap: React.CSSProperties = { display: "flex", flexDirection: "column", lineHeight: 1 };
-  const logoName: React.CSSProperties = { fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.3rem", fontWeight: 600, color: "#1a4a2e", letterSpacing: "-0.02em" };
-  const logoTag: React.CSSProperties = { fontFamily: "'DM Sans', sans-serif", fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#4a9463", marginTop: "1px" };
-
-  const links: React.CSSProperties = { display: "flex", gap: "2rem", alignItems: "center" };
-  const lk: React.CSSProperties = { fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#2d3a2e", textDecoration: "none", transition: "color 0.2s" };
-  const cta: React.CSSProperties = { fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 500, padding: "9px 22px", background: "#1a4a2e", color: "#f8faf5", borderRadius: "100px", textDecoration: "none", transition: "background 0.2s" };
-
   return (
-    <nav style={nav}>
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      padding: "0 2.5rem", height: "68px",
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      background: scrolled ? "rgba(245,240,232,0.96)" : "transparent",
+      backdropFilter: scrolled ? "blur(16px)" : "none",
+      borderBottom: scrolled ? "0.5px solid rgba(26,24,20,0.08)" : "none",
+      transition: "all 0.4s",
+    }}>
       <Link href="/" style={{ textDecoration: "none" }}>
-        <div style={logoWrap}>
-          <span style={logoName}>plena</span>
-          <span style={logoTag}>nutrición con propósito</span>
+        <div>
+          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.35rem", fontWeight: 400, color: "#1c2b1e", letterSpacing: "0.04em" }}>
+            Plena
+          </div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#7a9b7e", marginTop: "1px" }}>
+            Nutrición con propósito
+          </div>
         </div>
       </Link>
-      <div style={links} className="desktop-nav">
-        {[{href:"/planes",label:"Planes"},{href:"/sobre-nosotros",label:"Nosotras"},{href:"/contacto",label:"¿Cómo funciona?"}].map(l=>(
-          <Link key={l.href} href={l.href} style={lk}>{l.label}</Link>
+
+      <div className="desktop-nav" style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
+        {[{ href: "/planes", label: "Planes" }, { href: "/sobre-nosotros", label: "Nosotras" }, { href: "/contacto", label: "¿Cómo funciona?" }].map(l => (
+          <Link key={l.href} href={l.href} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#3d3830", textDecoration: "none", letterSpacing: "0.02em" }}>
+            {l.label}
+          </Link>
         ))}
-        <Link href="/contacto" style={cta}>Empezar hoy</Link>
+        <Link href="/contacto" style={{
+          fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontWeight: 500,
+          padding: "9px 22px", background: "#1c2b1e", color: "#f5f0e8",
+          borderRadius: "2px", textDecoration: "none", letterSpacing: "0.04em",
+        }}>
+          Empezar
+        </Link>
       </div>
       <style>{`@media(max-width:768px){.desktop-nav{display:none!important}}`}</style>
     </nav>
