@@ -45,7 +45,7 @@ export default function PitchAlan() {
       <div style={{ background: g.ivory, border: `0.5px solid ${g.stone}`, borderRadius: "6px", padding: "1.5rem", marginBottom: "3rem" }}>
         <p style={{ fontFamily: g.serif, fontSize: "1.3rem", color: g.night, marginBottom: "12px", lineHeight: 1.3 }}>Socio operativo · Chef Plena</p>
         <p style={{ fontFamily: g.sans, fontSize: "14px", lineHeight: 1.8, color: g.ink3, margin: 0 }}>
-          Desarrollas los planes nutricionales con propósito médico. Co-diseñas recetas adaptadas por condición. Participas en el costeo real del modelo. Tu expertise valida la promesa de Plena ante los clientes y ante los nutriólogos con los que trabajaremos.
+          Desarrollas los planes nutricionales con propósito médico. Co-diseñas recetas adaptadas por condición. Participas en el costeo real del modelo. También validas los planes de suplementación que el nutriólogo recetará — tu rol une la cocina con la ciencia. Tu expertise es el diferenciador real de Plena.
         </p>
       </div>
 
@@ -80,7 +80,7 @@ export default function PitchAlan() {
       </p>
       <div style={{ padding: "1rem", background: g.ivory, border: `0.5px solid ${g.stone}`, borderRadius: "4px" }}>
         <p style={{ fontFamily: g.sans, fontSize: "13px", color: g.ink3, margin: 0, lineHeight: 1.7 }}>
-          La IP de las recetas pertenece a Plena, pero tu nombre y credenciales son parte visible de la marca. El éxito del modelo es el éxito de tu reputación.
+          La IP de las recetas pertenece a Plena. Tu nombre y credenciales son parte visible de la marca — eres el chef que hace que la promesa nutricional sea creíble. El éxito del modelo es el éxito de tu reputación profesional.
         </p>
       </div>
     </div>
