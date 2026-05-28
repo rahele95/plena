@@ -1,505 +1,567 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
-const ACCESS_CODE = "plena-costos-24";
+const ACCESS = "plena-costos-24";
 
-const g = {
-  night:"#1c2b1e",sage:"#7a9b7e",sageL:"#a8c4a0",linen:"#f5f0e8",
-  ivory:"#faf7f2",stone:"#c8bfb0",ink2:"#3d3830",ink3:"#7a736a",
-  red:"#c4503a",amber:"#bf8a1a",green:"#1D9E75",
-  serif:"'Cormorant Garamond',serif",sans:"'DM Sans',system-ui,sans-serif",
+const G = {
+  night:"#1c2b1e", sage:"#7a9b7e", sageL:"#a8c4a0", linen:"#f5f0e8",
+  ivory:"#faf7f2", stone:"#c8bfb0", ink2:"#3d3830", ink3:"#7a736a",
+  red:"#c4503a", amber:"#bf8a1a", green:"#1D9E75",
+  serif:"'Cormorant Garamond',serif", sans:"'DM Sans',system-ui,sans-serif",
 };
 
-const label = (txt:string) => (
-  <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-    textTransform:"uppercase" as const,color:g.ink3,display:"block",marginBottom:"5px"}}>{txt}</span>
-);
+// ── TIPOS ──────────────────────────────────────────────────────────────────
+interface Ingrediente { id:string; nombre:string; categoria:string; precio_kg:number; }
+interface ItemReceta  { ing_id:string; gramos:number; }
+interface Receta      { id:string; nombre:string; plan:string; condicion:string; items:ItemReceta[]; }
 
-function Slider({name,min,max,step=1,value,onChange,prefix="$",suffix=""}:{
-  name:string;min:number;max:number;step?:number;value:number;
-  onChange:(v:number)=>void;prefix?:string;suffix?:string;
-}){
-  return(
-    <div style={{marginBottom:"14px"}}>
-      {label(name)}
-      <div style={{display:"flex",gap:"10px",alignItems:"center"}}>
-        <input type="range" min={min} max={max} step={step} value={value}
-          onChange={e=>onChange(Number(e.target.value))}
-          style={{flex:1,accentColor:g.sage,height:"3px"}}/>
-        <span style={{fontFamily:g.sans,fontSize:"13px",color:g.night,
-          minWidth:"64px",textAlign:"right" as const,fontWeight:500}}>
-          {prefix}{value.toLocaleString()}{suffix}
-        </span>
+// ── BASE DE INGREDIENTES (precios reales GDL Mercado de Abastos 2025) ─────
+const INGREDIENTES: Ingrediente[] = [
+  // Proteínas
+  { id:"pol_pec",  nombre:"Pechuga de pollo (filete)", categoria:"Proteína",  precio_kg:226 },
+  { id:"pol_mus",  nombre:"Muslo de pollo",             categoria:"Proteína",  precio_kg:62  },
+  { id:"res_mag",  nombre:"Res magra (milanesa)",        categoria:"Proteína",  precio_kg:180 },
+  { id:"sal_fil",  nombre:"Salmón filete",               categoria:"Proteína",  precio_kg:320 },
+  { id:"atun_nat", nombre:"Atún en agua (lata 140g)",    categoria:"Proteína",  precio_kg:95  },
+  { id:"hue_bla",  nombre:"Huevo blanco",                categoria:"Proteína",  precio_kg:42  },
+  { id:"lenj",     nombre:"Lentejas",                    categoria:"Proteína",  precio_kg:38  },
+  { id:"gar",      nombre:"Garbanzo",                    categoria:"Proteína",  precio_kg:42  },
+  // Carbohidratos complejos
+  { id:"arr_int",  nombre:"Arroz integral",              categoria:"Carbohidrato", precio_kg:28 },
+  { id:"qui",      nombre:"Quinoa",                      categoria:"Carbohidrato", precio_kg:120 },
+  { id:"cam_coc",  nombre:"Camote cocido",               categoria:"Carbohidrato", precio_kg:22 },
+  { id:"avi_hoj",  nombre:"Avena en hojuela",            categoria:"Carbohidrato", precio_kg:26 },
+  { id:"tor_mai",  nombre:"Tortilla de maíz (4 piezas)", categoria:"Carbohidrato", precio_kg:18 },
+  // Verduras
+  { id:"bro",      nombre:"Brócoli",                     categoria:"Verdura",   precio_kg:28 },
+  { id:"esp",      nombre:"Espinaca",                    categoria:"Verdura",   precio_kg:32 },
+  { id:"zar",      nombre:"Zanahoria",                   categoria:"Verdura",   precio_kg:16 },
+  { id:"cal",      nombre:"Calabacita",                  categoria:"Verdura",   precio_kg:18 },
+  { id:"tom",      nombre:"Tomate bola",                 categoria:"Verdura",   precio_kg:20 },
+  { id:"ceb",      nombre:"Cebolla",                     categoria:"Verdura",   precio_kg:16 },
+  { id:"ajo",      nombre:"Ajo (diente)",                categoria:"Verdura",   precio_kg:60 },
+  { id:"pim",      nombre:"Pimiento morrón",             categoria:"Verdura",   precio_kg:45 },
+  { id:"lec",      nombre:"Lechuga romana",              categoria:"Verdura",   precio_kg:22 },
+  { id:"nop",      nombre:"Nopal",                       categoria:"Verdura",   precio_kg:14 },
+  // Grasas saludables
+  { id:"agu",      nombre:"Aguacate",                    categoria:"Grasa",     precio_kg:55 },
+  { id:"ace_oli",  nombre:"Aceite de oliva extra virgen",categoria:"Grasa",     precio_kg:220 },
+  { id:"alm",      nombre:"Almendras",                   categoria:"Grasa",     precio_kg:280 },
+  // Condimentos y extras
+  { id:"sal",      nombre:"Sal de mar (porción)",        categoria:"Condimento",precio_kg:8  },
+  { id:"lim",      nombre:"Limón",                       categoria:"Condimento",precio_kg:18 },
+  { id:"chi_ser",  nombre:"Chile serrano",               categoria:"Condimento",precio_kg:18 },
+  { id:"cil",      nombre:"Cilantro",                    categoria:"Condimento",precio_kg:20 },
+];
+
+// ── RECETAS BASE (5 recetas, 3 planes, validadas nutricionalmente) ─────────
+const RECETAS: Receta[] = [
+  {
+    id:"r1", nombre:"Bowl de pollo + quinoa + verduras",
+    plan:"estandar", condicion:"general",
+    items:[
+      { ing_id:"pol_pec", gramos:160 },
+      { ing_id:"qui",     gramos:80  },
+      { ing_id:"bro",     gramos:100 },
+      { ing_id:"zar",     gramos:60  },
+      { ing_id:"ace_oli", gramos:8   },
+      { ing_id:"lim",     gramos:15  },
+      { ing_id:"sal",     gramos:3   },
+    ],
+  },
+  {
+    id:"r2", nombre:"Salmón + camote + espinaca",
+    plan:"estandar", condicion:"general",
+    items:[
+      { ing_id:"sal_fil", gramos:140 },
+      { ing_id:"cam_coc", gramos:120 },
+      { ing_id:"esp",     gramos:80  },
+      { ing_id:"ace_oli", gramos:8   },
+      { ing_id:"ajo",     gramos:5   },
+      { ing_id:"lim",     gramos:10  },
+    ],
+  },
+  {
+    id:"r3", nombre:"Pollo + arroz integral + nopal + aguacate",
+    plan:"medico", condicion:"diabetes",
+    items:[
+      { ing_id:"pol_pec", gramos:170 },
+      { ing_id:"arr_int", gramos:70  },
+      { ing_id:"nop",     gramos:100 },
+      { ing_id:"agu",     gramos:40  },
+      { ing_id:"tom",     gramos:60  },
+      { ing_id:"ceb",     gramos:30  },
+      { ing_id:"lim",     gramos:10  },
+      { ing_id:"sal",     gramos:2   },
+    ],
+  },
+  {
+    id:"r4", nombre:"Salmón + quinoa + espinaca + pimiento",
+    plan:"medico", condicion:"cardiovascular",
+    items:[
+      { ing_id:"sal_fil", gramos:150 },
+      { ing_id:"qui",     gramos:80  },
+      { ing_id:"esp",     gramos:80  },
+      { ing_id:"pim",     gramos:60  },
+      { ing_id:"ace_oli", gramos:10  },
+      { ing_id:"ajo",     gramos:4   },
+    ],
+  },
+  {
+    id:"r5", nombre:"Pechuga + tortilla + frijoles + verduras",
+    plan:"kids", condicion:"general",
+    items:[
+      { ing_id:"pol_pec", gramos:120 },
+      { ing_id:"tor_mai", gramos:60  },
+      { ing_id:"gar",     gramos:60  },
+      { ing_id:"lec",     gramos:40  },
+      { ing_id:"tom",     gramos:40  },
+      { ing_id:"zar",     gramos:40  },
+    ],
+  },
+];
+
+const PLANES = [
+  { k:"estandar", l:"Semanal estándar",        precio_base:200, condicion:"general"       },
+  { k:"medico",   l:"Médico personalizado",    precio_base:300, condicion:"diabetes"      },
+  { k:"cardio",   l:"Médico cardiovascular",   precio_base:300, condicion:"cardiovascular"},
+  { k:"kids",     l:"Lunch Kids",              precio_base:140, condicion:"general"       },
+];
+
+const CONDICIONES = [
+  { k:"general",        l:"General / bienestar" },
+  { k:"diabetes",       l:"Diabetes tipo 2"     },
+  { k:"cardiovascular", l:"Cardiovascular / DASH"},
+  { k:"peso",           l:"Control de peso"     },
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function costoReceta(receta: Receta, ings: Ingrediente[], merma=0.12): number {
+  return receta.items.reduce((acc, item) => {
+    const ing = ings.find(i => i.id === item.ing_id);
+    if (!ing) return acc;
+    const costo_por_g = ing.precio_kg / 1000;
+    return acc + item.gramos * costo_por_g * (1 + merma);
+  }, 0);
+}
+
+function pesoTotal(receta: Receta): number {
+  return receta.items.reduce((a, i) => a + i.gramos, 0);
+}
+
+// ── COMPONENTES ──────────────────────────────────────────────────────────
+function EyeBrow({ children }: { children: React.ReactNode }) {
+  return <span style={{ fontFamily:G.sans, fontSize:"10px", letterSpacing:"0.16em",
+    textTransform:"uppercase" as const, color:G.sage, display:"block", marginBottom:"8px" }}>{children}</span>;
+}
+
+function Pct({ v }: { v: number }) {
+  const color = v >= 45 ? G.green : v >= 32 ? G.amber : G.red;
+  const label = v >= 45 ? "✅ Saludable" : v >= 32 ? "⚠ Ajustado" : "🔴 Riesgo";
+  return <span style={{ fontFamily:G.sans, fontSize:"11px", color, fontWeight:500 }}>{label} ({v}%)</span>;
+}
+
+// ── PANTALLA PRINCIPAL ────────────────────────────────────────────────────
+export default function CostosV2() {
+  const [auth, setAuth]         = useState(false);
+  const [pwd, setPwd]           = useState("");
+  const [err, setErr]           = useState(false);
+
+  // Selección
+  const [recetaId, setRecetaId] = useState("r1");
+  const [planK,    setPlanK]    = useState("estandar");
+  const [merma,    setMerma]    = useState(0.12);
+  const [precio,   setPrecio]   = useState(200);
+  const [clientes, setClientes] = useState(10);
+  const [comidas,  setComidas]  = useState(10);
+
+  // Modificaciones de ingredientes (gramos custom por item)
+  const [overrides, setOverrides] = useState<Record<string,number>>({});
+
+  // Comisiones
+  const [comRafael,  setComRafael]  = useState(30);
+  const [comAlan,    setComAlan]    = useState(10);
+  const [comEmpaque, setComEmpaque] = useState(10);
+  const [comLogist,  setComLogist]  = useState(15);
+
+  const receta = useMemo(() => RECETAS.find(r => r.id === recetaId)!, [recetaId]);
+
+  const itemsEfectivos = useMemo(() =>
+    receta.items.map(i => ({
+      ...i,
+      gramos: overrides[i.id] !== undefined ? overrides[i.id] : i.gramos,
+    })), [receta, overrides]);
+
+  const costoIng = useMemo(() => {
+    return itemsEfectivos.reduce((acc, item) => {
+      const ing = INGREDIENTES.find(i => i.id === item.ing_id);
+      if (!ing) return acc;
+      return acc + (ing.precio_kg / 1000) * item.gramos * (1 + merma);
+    }, 0);
+  }, [itemsEfectivos, merma]);
+
+  const costoTotal = costoIng + comRafael + comAlan + comEmpaque + comLogist;
+  const margen     = precio - costoTotal;
+  const pct        = precio > 0 ? Math.round((margen / precio) * 100) : 0;
+  const alan8      = Math.max(0, Math.round(margen * 0.08));
+
+  const ingresoSem  = precio    * comidas * clientes;
+  const costoSem    = costoTotal * comidas * clientes;
+  const utilidadSem = margen    * comidas * clientes;
+  const utilidadMes = utilidadSem * 4;
+
+  const pesoP = pesoTotal({ ...receta, items: itemsEfectivos });
+
+  if (!auth) return (
+    <div style={{ minHeight:"100vh", background:G.linen, display:"flex",
+      alignItems:"center", justifyContent:"center", padding:"2rem" }}>
+      <div style={{ maxWidth:"360px", width:"100%", textAlign:"center" as const }}>
+        <EyeBrow>Acceso restringido · Solo equipo Plena</EyeBrow>
+        <p style={{ fontFamily:G.serif, fontSize:"1.8rem", color:G.night, marginBottom:"8px", fontWeight:400 }}>
+          Plena · Costeo por ingrediente
+        </p>
+        <p style={{ fontFamily:G.sans, fontSize:"13px", color:G.ink3, marginBottom:"28px", lineHeight:1.7 }}>
+          Herramienta de costeo real. Precios Mercado de Abastos GDL 2025.
+        </p>
+        <input type="password" value={pwd} placeholder="Código de acceso"
+          onChange={e => { setPwd(e.target.value); setErr(false); }}
+          onKeyDown={e => { if (e.key === "Enter") { if (pwd === ACCESS) setAuth(true); else setErr(true); }}}
+          style={{ width:"100%", padding:"12px 14px", borderRadius:"4px", fontFamily:G.sans,
+            fontSize:"14px", border:`0.5px solid ${err ? G.red : G.stone}`, background:G.ivory,
+            outline:"none", marginBottom:"8px", boxSizing:"border-box" as const }} />
+        {err && <p style={{ fontFamily:G.sans, fontSize:"11px", color:G.red, marginBottom:"8px" }}>Código incorrecto</p>}
+        <button onClick={() => { if (pwd === ACCESS) setAuth(true); else setErr(true); }}
+          style={{ width:"100%", padding:"11px", background:G.night, color:G.linen, border:"none",
+            borderRadius:"4px", fontFamily:G.sans, fontSize:"13px", cursor:"pointer" }}>
+          Ingresar
+        </button>
       </div>
     </div>
   );
-}
 
-function Stat({label:lbl,value,color=g.night,small=false}:{
-  label:string;value:string;color?:string;small?:boolean;
-}){
-  return(
-    <div style={{background:"white",border:`0.5px solid ${g.stone}`,
-      borderRadius:"6px",padding:small?"10px 14px":"14px 16px"}}>
-      <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.12em",
-        textTransform:"uppercase" as const,color:g.ink3,marginBottom:"4px"}}>{lbl}</p>
-      <p style={{fontFamily:g.serif,fontSize:small?"1.1rem":"1.4rem",
-        color,fontWeight:400,lineHeight:1.1}}>{value}</p>
-    </div>
-  );
-}
+  return (
+    <div style={{ background:G.linen, minHeight:"100vh" }}>
+    <div style={{ maxWidth:"1000px", margin:"0 auto", padding:"2.5rem 1.5rem 6rem" }}>
 
-// ── Diagrama de flujo de costos (SVG inline) ──────────────────────────────────
-function DiagramaFlujo({ing,chef,empaque,cocina,logistica,precio}:{
-  ing:number;chef:number;empaque:number;cocina:number;logistica:number;precio:number;
-}){
-  const costo = ing+chef+empaque+cocina+logistica;
-  const margen = precio - costo;
-  const pct = Math.max(0,Math.round((margen/precio)*100));
-  const w = 620; const h = 200;
-  const items = [
-    {label:"Ingredientes",val:ing,color:"#7a9b7e"},
-    {label:"Chef",val:chef,color:"#a8c4a0"},
-    {label:"Empaque",val:empaque,color:"#c8bfb0"},
-    {label:"Cocina",val:cocina,color:"#9e9385"},
-    {label:"Logística",val:logistica,color:"#7a736a"},
-  ];
-  // stacked bar
-  let acc = 0;
-  const bars = items.map(it=>{
-    const x = 20 + (acc/precio)*(w-40);
-    const bw = (it.val/precio)*(w-40);
-    acc += it.val;
-    return {...it, x, bw};
-  });
-  const margenX = 20+(costo/precio)*(w-40);
-  const margenW = (margen/precio)*(w-40);
-
-  return(
-    <div style={{margin:"24px 0"}}>
-      <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-        textTransform:"uppercase" as const,color:g.ink3,marginBottom:"10px"}}>
-        Diagrama de flujo de costos · precio de venta = ${precio} MXN
-      </p>
-      <svg viewBox={`0 0 ${w} ${h}`} style={{width:"100%",borderRadius:"6px",overflow:"visible"}}>
-        {/* Barras de costo */}
-        {bars.map((b,i)=>(
-          <g key={i}>
-            <rect x={b.x} y={40} width={Math.max(b.bw-2,0)} height={40}
-              fill={b.color} rx={i===0?4:0}/>
-            {b.bw>32&&(
-              <text x={b.x+b.bw/2} y={64} textAnchor="middle"
-                fontFamily={g.sans} fontSize="10" fill="white">
-                ${b.val}
-              </text>
-            )}
-          </g>
-        ))}
-        {/* Barra de margen */}
-        {margenW>0&&(
-          <rect x={margenX} y={40} width={Math.max(margenW-2,0)} height={40}
-            fill={margen>0?"#1D9E75":"#c4503a"} rx={0}
-            style={{rx:"0 4px 4px 0"}}/>
-        )}
-        {margenW>40&&(
-          <text x={margenX+margenW/2} y={64} textAnchor="middle"
-            fontFamily={g.sans} fontSize="10" fill="white">
-            {pct}%
-          </text>
-        )}
-        {/* Etiquetas debajo */}
-        {bars.map((b,i)=>(
-          b.bw>24&&(
-            <text key={i} x={b.x+b.bw/2} y={100} textAnchor="middle"
-              fontFamily={g.sans} fontSize="9" fill={g.ink3}>
-              {b.label}
-            </text>
-          )
-        ))}
-        {margenW>30&&(
-          <text x={margenX+margenW/2} y={100} textAnchor="middle"
-            fontFamily={g.sans} fontSize="9" fill={g.green}>Margen</text>
-        )}
-        {/* Línea precio total */}
-        <line x1={20} y1={118} x2={w-20} y2={118} stroke={g.stone} strokeWidth="0.5"/>
-        <text x={20} y={134} fontFamily={g.sans} fontSize="10" fill={g.ink3}>$0</text>
-        <text x={w-20} y={134} textAnchor="end" fontFamily={g.sans} fontSize="10" fill={g.ink3}>
-          ${precio} MXN
-        </text>
-        <text x={margenX} y={134} fontFamily={g.sans} fontSize="10" fill={g.green}>
-          ${costo}
-        </text>
-        {/* leyenda */}
-        <text x={20} y={160} fontFamily={g.sans} fontSize="10" fill={g.ink3}>
-          Costo total: ${costo} MXN · Margen: ${margen} MXN ({pct}%)
-        </text>
-      </svg>
-    </div>
-  );
-}
-
-// ── Diagrama fases (SVG) ──────────────────────────────────────────────────────
-function DiagramaFases({semana,mes}:{semana:number;mes:number}){
-  const fases = [
-    {n:"F00",label:"Fundamentos",sub:"Esta semana",color:"#EF9F27",done:true},
-    {n:"F01",label:"Socios",sub:"Sem 1–3",color:g.sage,done:false},
-    {n:"F02",label:"Infra",sub:"Sem 3–4",color:"#7F77DD",done:false},
-    {n:"F03",label:"3 Beta",sub:`Mes 2 · Meta: $${mes.toLocaleString()}/mes`,color:g.green,done:false},
-  ];
-  const W=620; const cx=(i:number)=>70+i*160;
-  return(
-    <div style={{margin:"24px 0"}}>
-      <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-        textTransform:"uppercase" as const,color:g.ink3,marginBottom:"10px"}}>
-        Fases del proyecto · proyección a 3 clientes beta
-      </p>
-      <svg viewBox={`0 0 ${W} 120`} style={{width:"100%"}}>
-        {fases.map((_,i)=>i<3&&(
-          <line key={i} x1={cx(i)+36} y1={40} x2={cx(i+1)-36} y2={40}
-            stroke={g.stone} strokeWidth="1" strokeDasharray="4 3"/>
-        ))}
-        {fases.map((f,i)=>(
-          <g key={i}>
-            <circle cx={cx(i)} cy={40} r={30}
-              fill={f.done?"white":g.linen}
-              stroke={f.color} strokeWidth={f.done?2:1}/>
-            <text x={cx(i)} y={36} textAnchor="middle"
-              fontFamily={g.sans} fontSize="9" fill={f.color} fontWeight="600">{f.n}</text>
-            <text x={cx(i)} y={48} textAnchor="middle"
-              fontFamily={g.sans} fontSize="8" fill={g.ink3}>{f.label}</text>
-            <text x={cx(i)} y={82} textAnchor="middle"
-              fontFamily={g.sans} fontSize="9" fill={g.ink3}>{f.sub}</text>
-          </g>
-        ))}
-        <text x={W/2} y={110} textAnchor="middle"
-          fontFamily={g.sans} fontSize="9" fill={g.ink3}>
-          Proyección semanal: ${semana.toLocaleString()} MXN · Mensual: ${mes.toLocaleString()} MXN
-        </text>
-      </svg>
-    </div>
-  );
-}
-
-export default function Costos(){
-  const [auth,setAuth]=useState(false);
-  const [input,setInput]=useState("");
-  const [error,setError]=useState(false);
-  const [plan,setPlan]=useState<"estandar"|"medico"|"kids">("estandar");
-
-  const defaults:{[k:string]:{ing:number;chef:number;empaque:number;cocina:number;logistica:number;precio:number}}={
-    estandar:{ing:55,chef:10,empaque:10,cocina:30,logistica:12,precio:200},
-    medico:  {ing:75,chef:14,empaque:12,cocina:30,logistica:12,precio:300},
-    kids:    {ing:40,chef:8, empaque:8, cocina:30,logistica:12,precio:140},
-  };
-
-  const [ing,    setIng]    = useState(defaults.estandar.ing);
-  const [chef,   setChef]   = useState(defaults.estandar.chef);
-  const [empaque,setEmpaque]= useState(defaults.estandar.empaque);
-  const [cocina, setCocina] = useState(defaults.estandar.cocina);
-  const [logistica,setLogistica]=useState(defaults.estandar.logistica);
-  const [precio, setPrecio] = useState(defaults.estandar.precio);
-  const [comidas,setComidas]= useState(10);
-  const [clientes,setClientes]=useState(3);
-
-  const costo = ing+chef+empaque+cocina+logistica;
-  const margen = precio - costo;
-  const pct = precio>0 ? Math.round((margen/precio)*100) : 0;
-  const ingresoSem = precio * comidas * clientes;
-  const costoSem   = costo  * comidas * clientes;
-  const utilidadSem= margen * comidas * clientes;
-  const utilidadMes= utilidadSem * 4;
-
-  const cambiarPlan = (p:"estandar"|"medico"|"kids")=>{
-    setPlan(p);
-    const d=defaults[p];
-    setIng(d.ing); setChef(d.chef); setEmpaque(d.empaque);
-    setCocina(d.cocina); setLogistica(d.logistica); setPrecio(d.precio);
-  };
-
-  const estadoMargen = pct>=50?"✅ Saludable":pct>=35?"⚠️ Ajustado":"🔴 Riesgo";
-  const colorMargen  = pct>=50?g.green:pct>=35?g.amber:g.red;
-
-  if(!auth){
-    return(
-      <div style={{minHeight:"100vh",background:g.linen,display:"flex",
-        alignItems:"center",justifyContent:"center",padding:"2rem"}}>
-        <div style={{maxWidth:"380px",width:"100%",textAlign:"center" as const}}>
-          <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.18em",
-            textTransform:"uppercase" as const,color:g.sage,marginBottom:"24px"}}>
-            Acceso restringido
-          </p>
-          <p style={{fontFamily:g.serif,fontSize:"1.8rem",color:g.night,
-            marginBottom:"8px",fontWeight:400}}>Plena · Costos</p>
-          <p style={{fontFamily:g.sans,fontSize:"14px",color:g.ink3,
-            marginBottom:"32px",lineHeight:1.7}}>
-            Herramienta interna de costeo. Solo para equipo Plena.
-          </p>
-          <input type="password" placeholder="Código de acceso" value={input}
-            onChange={e=>{setInput(e.target.value);setError(false);}}
-            onKeyDown={e=>{if(e.key==="Enter"){if(input===ACCESS_CODE)setAuth(true);else setError(true);}}}
-            style={{width:"100%",padding:"12px 16px",borderRadius:"4px",fontFamily:g.sans,
-              fontSize:"14px",border:`0.5px solid ${error?"#c4503a":g.stone}`,
-              background:g.ivory,outline:"none",marginBottom:"8px",boxSizing:"border-box" as const}}/>
-          {error&&<p style={{fontFamily:g.sans,fontSize:"12px",color:g.red,marginBottom:"12px"}}>
-            Código incorrecto
-          </p>}
-          <button onClick={()=>{if(input===ACCESS_CODE)setAuth(true);else setError(true);}}
-            style={{width:"100%",padding:"12px",background:g.night,color:g.linen,
-              border:"none",borderRadius:"4px",fontFamily:g.sans,fontSize:"13px",
-              cursor:"pointer",letterSpacing:"0.06em"}}>
-            Ingresar
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return(
-    <div style={{background:g.linen,minHeight:"100vh"}}>
-      <div style={{maxWidth:"860px",margin:"0 auto",padding:"3rem 1.5rem 6rem"}}>
-
-        {/* Header */}
-        <div style={{marginBottom:"2.5rem",paddingBottom:"2rem",
-          borderBottom:`0.5px solid ${g.stone}`}}>
-          <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.18em",
-            textTransform:"uppercase" as const,color:g.sage,display:"block",marginBottom:"8px"}}>
-            Capa 3 · Operativa · Confidencial
-          </span>
-          <h1 style={{fontFamily:g.serif,fontSize:"clamp(1.8rem,4vw,2.4rem)",
-            fontWeight:400,color:g.night,letterSpacing:"-0.02em",marginBottom:"8px"}}>
-            Calculadora de costos
-          </h1>
-          <p style={{fontFamily:g.sans,fontSize:"14px",color:g.ink3,lineHeight:1.7,maxWidth:"520px"}}>
-            Herramienta para costear recetas y validar márgenes por plan. 
-            Los valores por defecto son estimados — ajustar con Alan en la sesión de costeo real.
-          </p>
-        </div>
-
-        {/* Selector de plan */}
-        <div style={{marginBottom:"2rem"}}>
-          <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-            textTransform:"uppercase" as const,color:g.ink3,display:"block",marginBottom:"10px"}}>
-            Selecciona el plan a costear
-          </span>
-          <div style={{display:"flex",gap:"8px",flexWrap:"wrap" as const}}>
-            {([
-              {k:"estandar",l:"Semanal estándar","precio":"$180–220 MXN"},
-              {k:"medico",  l:"Médico personalizado","precio":"$250–350 MXN"},
-              {k:"kids",    l:"Lunch Kids","precio":"$120–160 MXN"},
-            ] as const).map(p=>(
-              <button key={p.k} onClick={()=>cambiarPlan(p.k)}
-                style={{padding:"8px 16px",borderRadius:"4px",fontFamily:g.sans,fontSize:"13px",
-                  cursor:"pointer",border:`0.5px solid ${plan===p.k?g.night:g.stone}`,
-                  background:plan===p.k?g.night:g.ivory,
-                  color:plan===p.k?g.linen:g.ink3}}>
-                {p.l} · {p.precio}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"24px",marginBottom:"2rem"}}>
-
-          {/* Columna izquierda: sliders */}
-          <div>
-            <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-              textTransform:"uppercase" as const,color:g.sage,display:"block",marginBottom:"14px"}}>
-              Estructura de costos · por comida
-            </span>
-            <div style={{background:"white",border:`0.5px solid ${g.stone}`,
-              borderRadius:"6px",padding:"1.25rem"}}>
-              <Slider name="Ingredientes" min={20} max={120} value={ing} onChange={setIng}/>
-              <Slider name="Chef (Alan)" min={5} max={40} value={chef} onChange={setChef}/>
-              <Slider name="Empaque al vacío" min={5} max={25} value={empaque} onChange={setEmpaque}/>
-              <Slider name="Cocina (Rafael / comisión)" min={20} max={50} value={cocina} onChange={setCocina}/>
-              <Slider name="Logística / delivery" min={5} max={40} value={logistica} onChange={setLogistica}/>
-              <div style={{borderTop:`0.5px solid ${g.stone}`,paddingTop:"12px",marginTop:"4px"}}>
-                <Slider name="Precio de venta" min={100} max={400} step={5} value={precio} onChange={setPrecio}/>
-              </div>
-            </div>
-
-            <div style={{marginTop:"16px"}}>
-              <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-                textTransform:"uppercase" as const,color:g.sage,display:"block",marginBottom:"14px"}}>
-                Proyección de volumen
-              </span>
-              <div style={{background:"white",border:`0.5px solid ${g.stone}`,
-                borderRadius:"6px",padding:"1.25rem"}}>
-                <Slider name="Comidas por cliente / semana" min={3} max={21} value={comidas} onChange={setComidas} prefix=""/>
-                <Slider name="Clientes activos" min={1} max={150} value={clientes} onChange={setClientes} prefix=""/>
-              </div>
-            </div>
-          </div>
-
-          {/* Columna derecha: resultados */}
-          <div>
-            <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-              textTransform:"uppercase" as const,color:g.sage,display:"block",marginBottom:"14px"}}>
-              Resultados
-            </span>
-
-            {/* Margen hero */}
-            <div style={{background:g.night,borderRadius:"6px",padding:"1.5rem",marginBottom:"12px"}}>
-              <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-                textTransform:"uppercase" as const,color:"rgba(168,196,160,0.7)",marginBottom:"6px"}}>
-                Margen por comida
-              </p>
-              <p style={{fontFamily:g.serif,fontSize:"2.4rem",
-                color:pct>=50?g.sageL:pct>=35?"#EF9F27":"#E24B4A",
-                lineHeight:1,marginBottom:"4px"}}>
-                {pct}%
-              </p>
-              <p style={{fontFamily:g.sans,fontSize:"12px",
-                color:"rgba(248,250,245,0.45)",lineHeight:1.5}}>
-                ${margen} MXN por comida · {estadoMargen}
-              </p>
-            </div>
-
-            {/* Stats grid */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"12px"}}>
-              <Stat label="Costo total / comida" value={`$${costo} MXN`}/>
-              <Stat label="Precio de venta" value={`$${precio} MXN`} color={g.night}/>
-              <Stat label="Ingreso semanal" value={`$${ingresoSem.toLocaleString()}`} small/>
-              <Stat label="Costo semanal" value={`$${costoSem.toLocaleString()}`} small/>
-            </div>
-
-            {/* Utilidad */}
-            <div style={{background:"white",border:`1px solid ${colorMargen}40`,
-              borderRadius:"6px",padding:"1.25rem"}}>
-              <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.12em",
-                textTransform:"uppercase" as const,color:g.ink3,marginBottom:"8px"}}>
-                Utilidad neta proyectada
-              </p>
-              <div style={{display:"flex",justifyContent:"space-between",
-                padding:"8px 0",borderBottom:`0.5px solid ${g.stone}`}}>
-                <span style={{fontFamily:g.sans,fontSize:"13px",color:g.ink3}}>Semanal ({clientes} clientes)</span>
-                <span style={{fontFamily:g.sans,fontSize:"14px",color:colorMargen,fontWeight:500}}>
-                  ${utilidadSem.toLocaleString()} MXN
-                </span>
-              </div>
-              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0"}}>
-                <span style={{fontFamily:g.sans,fontSize:"13px",color:g.ink3}}>Mensual estimado</span>
-                <span style={{fontFamily:g.serif,fontSize:"1.3rem",color:colorMargen}}>
-                  ${utilidadMes.toLocaleString()} MXN
-                </span>
-              </div>
-            </div>
-
-            {/* Desglose comisiones */}
-            <div style={{background:g.ivory,border:`0.5px solid ${g.stone}`,
-              borderRadius:"6px",padding:"1.25rem",marginTop:"12px"}}>
-              <p style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.12em",
-                textTransform:"uppercase" as const,color:g.ink3,marginBottom:"8px"}}>
-                Desglose por socio · semanal
-              </p>
-              {[
-                {nombre:"Rafael (cocina)",val:cocina*comidas*clientes},
-                {nombre:"Alan (chef)",    val:chef*comidas*clientes},
-                {nombre:"Logística",      val:logistica*comidas*clientes},
-              ].map(s=>(
-                <div key={s.nombre} style={{display:"flex",justifyContent:"space-between",
-                  padding:"5px 0",borderBottom:`0.5px solid ${g.stone}30`}}>
-                  <span style={{fontFamily:g.sans,fontSize:"12px",color:g.ink3}}>{s.nombre}</span>
-                  <span style={{fontFamily:g.sans,fontSize:"12px",color:g.ink2,fontWeight:500}}>
-                    ${s.val.toLocaleString()} MXN
-                  </span>
-                </div>
-              ))}
-              <div style={{display:"flex",justifyContent:"space-between",paddingTop:"8px"}}>
-                <span style={{fontFamily:g.sans,fontSize:"11px",color:g.ink3}}>
-                  Alan · 8% utilidad neta
-                </span>
-                <span style={{fontFamily:g.sans,fontSize:"12px",color:g.green,fontWeight:500}}>
-                  ${Math.round(utilidadSem*0.08).toLocaleString()} MXN
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Diagrama de flujo */}
-        <div style={{background:"white",border:`0.5px solid ${g.stone}`,
-          borderRadius:"6px",padding:"1.5rem",marginBottom:"2rem"}}>
-          <DiagramaFlujo ing={ing} chef={chef} empaque={empaque}
-            cocina={cocina} logistica={logistica} precio={precio}/>
-        </div>
-
-        {/* Diagrama de fases */}
-        <div style={{background:"white",border:`0.5px solid ${g.stone}`,
-          borderRadius:"6px",padding:"1.5rem",marginBottom:"2rem"}}>
-          <DiagramaFases semana={ingresoSem} mes={ingresoSem*4}/>
-        </div>
-
-        {/* Tabla de escenarios */}
-        <div style={{background:"white",border:`0.5px solid ${g.stone}`,
-          borderRadius:"6px",padding:"1.5rem",marginBottom:"2rem"}}>
-          <span style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.14em",
-            textTransform:"uppercase" as const,color:g.sage,display:"block",marginBottom:"14px"}}>
-            Tabla de escenarios · plan {plan}
-          </span>
-          <table style={{width:"100%",borderCollapse:"collapse" as const}}>
-            <thead>
-              <tr style={{borderBottom:`0.5px solid ${g.stone}`}}>
-                {["Clientes","Comidas/sem","Ingreso","Costo","Utilidad","Margen"].map(h=>(
-                  <th key={h} style={{fontFamily:g.sans,fontSize:"10px",letterSpacing:"0.1em",
-                    textTransform:"uppercase" as const,color:g.ink3,padding:"8px",
-                    textAlign:"left" as const,fontWeight:400}}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {[3,10,25,50,100,150].map(cl=>{
-                const ing_s = precio*comidas*cl;
-                const cost_s = costo*comidas*cl;
-                const util_s = margen*comidas*cl;
-                const isActive = cl===clientes;
-                return(
-                  <tr key={cl} style={{background:isActive?`${g.sage}12`:"transparent",
-                    borderBottom:`0.5px solid ${g.stone}30`}}>
-                    <td style={{fontFamily:g.sans,fontSize:"13px",color:isActive?g.night:g.ink2,
-                      padding:"8px",fontWeight:isActive?500:400}}>{cl}</td>
-                    <td style={{fontFamily:g.sans,fontSize:"13px",color:g.ink3,padding:"8px"}}>
-                      {comidas*cl}
-                    </td>
-                    <td style={{fontFamily:g.sans,fontSize:"13px",color:g.ink2,padding:"8px"}}>
-                      ${ing_s.toLocaleString()}
-                    </td>
-                    <td style={{fontFamily:g.sans,fontSize:"13px",color:g.ink3,padding:"8px"}}>
-                      ${cost_s.toLocaleString()}
-                    </td>
-                    <td style={{fontFamily:g.sans,fontSize:"13px",
-                      color:util_s>0?g.green:g.red,padding:"8px",fontWeight:500}}>
-                      ${util_s.toLocaleString()}
-                    </td>
-                    <td style={{fontFamily:g.sans,fontSize:"13px",color:g.ink3,padding:"8px"}}>
-                      {pct}%
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Notas de validación */}
-        <div style={{padding:"1rem 1.25rem",background:g.ivory,
-          border:`0.5px solid ${g.stone}`,borderRadius:"4px"}}>
-          <p style={{fontFamily:g.sans,fontSize:"11px",color:g.ink3,lineHeight:1.8}}>
-            ⚠️ <strong>Importante:</strong> Los valores por defecto son estimados preliminares. 
-            Deben validarse con Alan en la sesión de costeo real (Etapa 0) y con el proveedor 
-            de empaque al vacío. Los costos de logística son un promedio — varían por zona y volumen.<br/>
-            Los costos de Rafael (cocina) asumen $30 MXN/pedido en Fase 1. 
-            A 150+ pedidos/semana se renegocia. El % de utilidad de Alan (8%) se aplica sobre 
-            utilidad neta después de todos los costos.
-          </p>
-        </div>
-
-        <p style={{fontFamily:g.sans,fontSize:"11px",color:g.ink3,
-          textAlign:"center" as const,marginTop:"3rem",lineHeight:1.7}}>
-          Herramienta confidencial · Plena · Capa 3<br/>
-          Cambios → Anexo de cambios Capa 3 en Notion
+      {/* Header */}
+      <div style={{ marginBottom:"2rem", paddingBottom:"1.5rem", borderBottom:`0.5px solid ${G.stone}` }}>
+        <EyeBrow>Capa 3 · Costeo por ingrediente · Confidencial</EyeBrow>
+        <h1 style={{ fontFamily:G.serif, fontSize:"clamp(1.6rem,3vw,2.2rem)", fontWeight:400,
+          color:G.night, marginBottom:"6px", letterSpacing:"-0.02em" }}>Calculadora de costos Plena</h1>
+        <p style={{ fontFamily:G.sans, fontSize:"13px", color:G.ink3, lineHeight:1.7, maxWidth:"580px" }}>
+          Precios reales del Mercado de Abastos GDL (jul 2025). Cada ingrediente es editable.
+          Los resultados son el insumo para la sesión de costeo con Alan.
         </p>
       </div>
+
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px" }}>
+
+        {/* ── COL IZQUIERDA ── */}
+        <div style={{ display:"flex", flexDirection:"column" as const, gap:"16px" }}>
+
+          {/* Selección de receta */}
+          <div>
+            <EyeBrow>01 · Selecciona la receta base</EyeBrow>
+            <div style={{ display:"flex", flexDirection:"column" as const, gap:"6px" }}>
+              {RECETAS.map(r => (
+                <button key={r.id} onClick={() => { setRecetaId(r.id); setOverrides({}); }}
+                  style={{ padding:"10px 14px", borderRadius:"4px", fontFamily:G.sans, fontSize:"13px",
+                    cursor:"pointer", textAlign:"left" as const,
+                    border:`0.5px solid ${recetaId === r.id ? G.night : G.stone}`,
+                    background: recetaId === r.id ? G.night : G.ivory,
+                    color: recetaId === r.id ? G.linen : G.ink2 }}>
+                  <span style={{ fontSize:"11px", color: recetaId === r.id ? G.sageL : G.sage,
+                    display:"block", marginBottom:"2px" }}>
+                    {PLANES.find(p=>p.k===r.plan)?.l} · {r.condicion}
+                  </span>
+                  {r.nombre}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Ingredientes editables */}
+          <div>
+            <EyeBrow>02 · Ingredientes · edita gramos por porción</EyeBrow>
+            <div style={{ background:"white", border:`0.5px solid ${G.stone}`, borderRadius:"6px",
+              overflow:"hidden" }}>
+              <div style={{ padding:"10px 14px", background:G.ivory, borderBottom:`0.5px solid ${G.stone}`,
+                display:"grid", gridTemplateColumns:"1fr 70px 70px 70px", gap:"8px" }}>
+                {["Ingrediente","Gramos","$/kg","Costo"].map(h=>(
+                  <span key={h} style={{ fontFamily:G.sans, fontSize:"10px", letterSpacing:"0.1em",
+                    textTransform:"uppercase" as const, color:G.ink3 }}>{h}</span>
+                ))}
+              </div>
+              {itemsEfectivos.map((item) => {
+                const ing = INGREDIENTES.find(i => i.id === item.ing_id);
+                if (!ing) return null;
+                const costoItem = (ing.precio_kg / 1000) * item.gramos * (1 + merma);
+                return (
+                  <div key={item.ing_id} style={{ padding:"8px 14px",
+                    borderBottom:`0.5px solid ${G.stone}30`,
+                    display:"grid", gridTemplateColumns:"1fr 70px 70px 70px", gap:"8px",
+                    alignItems:"center" }}>
+                    <div>
+                      <p style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2, marginBottom:"1px" }}>
+                        {ing.nombre}
+                      </p>
+                      <p style={{ fontFamily:G.sans, fontSize:"10px", color:G.ink3 }}>{ing.categoria}</p>
+                    </div>
+                    <input type="number" value={item.gramos} min={0} max={500}
+                      onChange={e => setOverrides(prev => ({ ...prev, [item.ing_id]: Number(e.target.value) }))}
+                      style={{ width:"60px", padding:"4px 6px", border:`0.5px solid ${G.stone}`,
+                        borderRadius:"3px", fontFamily:G.sans, fontSize:"12px",
+                        background:overrides[item.ing_id]!==undefined ? `${G.sage}15` : G.ivory,
+                        outline:"none", textAlign:"center" as const }} />
+                    <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink3 }}>
+                      ${ing.precio_kg}
+                    </span>
+                    <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2, fontWeight:500 }}>
+                      ${costoItem.toFixed(1)}
+                    </span>
+                  </div>
+                );
+              })}
+              <div style={{ padding:"10px 14px", background:G.ivory, display:"grid",
+                gridTemplateColumns:"1fr 70px 70px 70px", gap:"8px" }}>
+                <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2, fontWeight:500 }}>
+                  Total ingredientes ({pesoP}g · merma {Math.round(merma*100)}%)
+                </span>
+                <span/>
+                <span/>
+                <span style={{ fontFamily:G.sans, fontSize:"13px", color:G.night, fontWeight:600 }}>
+                  ${costoIng.toFixed(1)}
+                </span>
+              </div>
+            </div>
+
+            {/* Merma */}
+            <div style={{ marginTop:"8px", display:"flex", alignItems:"center", gap:"8px" }}>
+              <span style={{ fontFamily:G.sans, fontSize:"11px", color:G.ink3 }}>Merma / desperdicio:</span>
+              {[0.08, 0.12, 0.15, 0.20].map(v => (
+                <button key={v} onClick={() => setMerma(v)}
+                  style={{ padding:"3px 8px", borderRadius:"3px", fontFamily:G.sans, fontSize:"11px",
+                    cursor:"pointer", border:`0.5px solid ${merma===v?G.night:G.stone}`,
+                    background: merma===v ? G.night : G.ivory,
+                    color: merma===v ? G.linen : G.ink3 }}>
+                  {Math.round(v*100)}%
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Comisiones */}
+          <div>
+            <EyeBrow>03 · Comisiones y costos operativos · por comida</EyeBrow>
+            <div style={{ background:"white", border:`0.5px solid ${G.stone}`, borderRadius:"6px",
+              padding:"1rem 1.25rem" }}>
+              {[
+                { label:"Cocina Rafael (comisión)", val:comRafael, set:setComRafael, min:20, max:50,
+                  nota:"$25–35 F1, renegociar a 150+/sem" },
+                { label:"Chef Alan (por comida)",   val:comAlan,   set:setComAlan,   min:5,  max:30,
+                  nota:"$10 Etapa 1, +8% utilidad aparte" },
+                { label:"Empaque al vacío",         val:comEmpaque,set:setComEmpaque,min:6,  max:20,
+                  nota:"Pendiente proveedor GDL" },
+                { label:"Logística / delivery",     val:comLogist, set:setComLogist, min:8,  max:45,
+                  nota:"Promedio ZMG. Varía por zona" },
+              ].map(c => (
+                <div key={c.label} style={{ marginBottom:"12px" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"3px" }}>
+                    <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2 }}>{c.label}</span>
+                    <span style={{ fontFamily:G.sans, fontSize:"13px", color:G.night, fontWeight:500 }}>
+                      ${c.val} MXN
+                    </span>
+                  </div>
+                  <input type="range" min={c.min} max={c.max} value={c.val}
+                    onChange={e => c.set(Number(e.target.value))}
+                    style={{ width:"100%", accentColor:G.sage, height:"3px" }} />
+                  <p style={{ fontFamily:G.sans, fontSize:"10px", color:G.ink3, marginTop:"2px" }}>
+                    {c.nota}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── COL DERECHA ── */}
+        <div style={{ display:"flex", flexDirection:"column" as const, gap:"16px" }}>
+
+          {/* Precio de venta */}
+          <div>
+            <EyeBrow>04 · Precio de venta y volumen</EyeBrow>
+            <div style={{ background:"white", border:`0.5px solid ${G.stone}`, borderRadius:"6px",
+              padding:"1rem 1.25rem" }}>
+              <div style={{ marginBottom:"14px" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"4px" }}>
+                  <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2 }}>Precio de venta</span>
+                  <span style={{ fontFamily:G.sans, fontSize:"14px", color:G.night, fontWeight:600 }}>
+                    ${precio} MXN
+                  </span>
+                </div>
+                <input type="range" min={100} max={450} step={5} value={precio}
+                  onChange={e => setPrecio(Number(e.target.value))}
+                  style={{ width:"100%", accentColor:G.sage, height:"3px" }} />
+                <div style={{ display:"flex", justifyContent:"space-between", marginTop:"3px" }}>
+                  <span style={{ fontFamily:G.sans, fontSize:"10px", color:G.ink3 }}>Mín: $100</span>
+                  <span style={{ fontFamily:G.sans, fontSize:"10px", color:G.ink3 }}>Competencia GDL: $99–150</span>
+                  <span style={{ fontFamily:G.sans, fontSize:"10px", color:G.ink3 }}>Máx: $450</span>
+                </div>
+              </div>
+              <div style={{ marginBottom:"14px" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"4px" }}>
+                  <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2 }}>Comidas / cliente / semana</span>
+                  <span style={{ fontFamily:G.sans, fontSize:"13px", color:G.night }}>{comidas}</span>
+                </div>
+                <input type="range" min={3} max={21} value={comidas} onChange={e => setComidas(Number(e.target.value))}
+                  style={{ width:"100%", accentColor:G.sage, height:"3px" }} />
+              </div>
+              <div>
+                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"4px" }}>
+                  <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2 }}>Clientes activos</span>
+                  <span style={{ fontFamily:G.sans, fontSize:"13px", color:G.night }}>{clientes}</span>
+                </div>
+                <input type="range" min={1} max={150} value={clientes} onChange={e => setClientes(Number(e.target.value))}
+                  style={{ width:"100%", accentColor:G.sage, height:"3px" }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Resultado por comida */}
+          <div style={{ background:G.night, borderRadius:"6px", padding:"1.5rem" }}>
+            <EyeBrow>05 · Resultado por comida</EyeBrow>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"12px" }}>
+              {[
+                { l:"Ingredientes",  v:`$${costoIng.toFixed(1)}`,     c:"rgba(248,250,245,0.7)" },
+                { l:"Comisiones",    v:`$${(costoTotal-costoIng).toFixed(1)}`, c:"rgba(248,250,245,0.7)" },
+                { l:"Costo total",   v:`$${costoTotal.toFixed(1)}`,   c:G.linen },
+                { l:"Precio venta",  v:`$${precio}`,                  c:G.linen },
+              ].map(s => (
+                <div key={s.l} style={{ padding:"10px", background:"rgba(255,255,255,0.05)",
+                  borderRadius:"4px" }}>
+                  <p style={{ fontFamily:G.sans, fontSize:"10px", color:"rgba(248,250,245,0.4)",
+                    marginBottom:"3px" }}>{s.l}</p>
+                  <p style={{ fontFamily:G.serif, fontSize:"1.1rem", color:s.c }}>{s.v}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{ borderTop:"0.5px solid rgba(248,250,245,0.1)", paddingTop:"12px" }}>
+              <p style={{ fontFamily:G.sans, fontSize:"10px", color:"rgba(168,196,160,0.6)", marginBottom:"4px" }}>
+                Margen bruto
+              </p>
+              <p style={{ fontFamily:G.serif, fontSize:"2rem",
+                color: pct>=45 ? G.sageL : pct>=32 ? "#EF9F27" : "#E24B4A",
+                lineHeight:1, marginBottom:"4px" }}>
+                {pct}% · ${margen.toFixed(1)} MXN
+              </p>
+              <Pct v={pct} />
+              <p style={{ fontFamily:G.sans, fontSize:"11px", color:"rgba(248,250,245,0.35)",
+                marginTop:"6px" }}>
+                Alan 8% utilidad = ${alan8} MXN extra por comida
+              </p>
+            </div>
+          </div>
+
+          {/* Proyección semanal/mensual */}
+          <div style={{ background:"white", border:`0.5px solid ${G.stone}`, borderRadius:"6px",
+            padding:"1.25rem" }}>
+            <EyeBrow>06 · Proyección de negocio</EyeBrow>
+            {[
+              { l:"Ingreso semanal",   v:ingresoSem,   c:G.ink2  },
+              { l:"Costo semanal",     v:costoSem,     c:G.ink3  },
+              { l:"Utilidad semanal",  v:utilidadSem,  c:utilidadSem>0?G.green:G.red },
+              { l:"Utilidad mensual",  v:utilidadMes,  c:utilidadSem>0?G.green:G.red },
+            ].map(s => (
+              <div key={s.l} style={{ display:"flex", justifyContent:"space-between",
+                padding:"7px 0", borderBottom:`0.5px solid ${G.stone}30` }}>
+                <span style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink3 }}>{s.l}</span>
+                <span style={{ fontFamily:G.sans, fontSize:"13px", color:s.c, fontWeight:500 }}>
+                  ${s.v.toLocaleString()} MXN
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Tabla escenarios */}
+          <div style={{ background:"white", border:`0.5px solid ${G.stone}`, borderRadius:"6px",
+            padding:"1.25rem" }}>
+            <EyeBrow>07 · Escenarios de escala</EyeBrow>
+            <table style={{ width:"100%", borderCollapse:"collapse" as const }}>
+              <thead>
+                <tr style={{ borderBottom:`0.5px solid ${G.stone}` }}>
+                  {["Clientes","Ingreso/sem","Utilidad/sem","Estado"].map(h=>(
+                    <th key={h} style={{ fontFamily:G.sans, fontSize:"9px", letterSpacing:"0.08em",
+                      textTransform:"uppercase" as const, color:G.ink3, padding:"6px 4px",
+                      textAlign:"left" as const, fontWeight:400 }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[3,10,25,50,100,150].map(cl => {
+                  const u = margen * comidas * cl;
+                  const i = precio * comidas * cl;
+                  const isActive = cl === clientes;
+                  const margenPct = pct;
+                  return (
+                    <tr key={cl} style={{ background: isActive?`${G.sage}12`:"transparent",
+                      borderBottom:`0.5px solid ${G.stone}20` }}>
+                      <td style={{ fontFamily:G.sans, fontSize:"12px", color:isActive?G.night:G.ink2,
+                        padding:"6px 4px", fontWeight:isActive?600:400 }}>{cl}</td>
+                      <td style={{ fontFamily:G.sans, fontSize:"11px", color:G.ink3, padding:"6px 4px" }}>
+                        ${i.toLocaleString()}
+                      </td>
+                      <td style={{ fontFamily:G.sans, fontSize:"12px",
+                        color:u>0?G.green:G.red, padding:"6px 4px", fontWeight:500 }}>
+                        ${u.toLocaleString()}
+                      </td>
+                      <td style={{ padding:"6px 4px" }}>
+                        <span style={{ fontFamily:G.sans, fontSize:"10px",
+                          color: margenPct>=45?G.green:margenPct>=32?G.amber:G.red }}>
+                          {margenPct>=45?"✅":margenPct>=32?"⚠":"🔴"} {margenPct}%
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Proyección socios */}
+          <div style={{ background:G.ivory, border:`0.5px solid ${G.stone}`, borderRadius:"6px",
+            padding:"1.25rem" }}>
+            <EyeBrow>08 · Proyección de ingresos por socio · semanal</EyeBrow>
+            <p style={{ fontFamily:G.sans, fontSize:"11px", color:G.ink3, marginBottom:"12px", lineHeight:1.6 }}>
+              Base: {clientes} clientes × {comidas} comidas/sem
+            </p>
+            {[
+              { nombre:"Rafael · El Romeral",     ingreso: comRafael  * comidas * clientes, nota:"Comisión por pedido" },
+              { nombre:"Alan · Chef (fijo)",       ingreso: comAlan    * comidas * clientes, nota:"$"+comAlan+"/comida" },
+              { nombre:"Alan · 8% utilidad neta",  ingreso: alan8      * comidas * clientes, nota:"Sobre utilidad" },
+              { nombre:"Luis Fer · 4% digital",    ingreso: Math.round(ingresoSem*0.04),      nota:"% sobre ingreso total" },
+            ].map(s => (
+              <div key={s.nombre} style={{ display:"flex", justifyContent:"space-between",
+                alignItems:"center", padding:"8px 0", borderBottom:`0.5px solid ${G.stone}30` }}>
+                <div>
+                  <p style={{ fontFamily:G.sans, fontSize:"12px", color:G.ink2 }}>{s.nombre}</p>
+                  <p style={{ fontFamily:G.sans, fontSize:"10px", color:G.ink3 }}>{s.nota}</p>
+                </div>
+                <span style={{ fontFamily:G.sans, fontSize:"13px", color:G.night, fontWeight:500 }}>
+                  ${s.ingreso.toLocaleString()} MXN
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontFamily:G.sans, fontSize:"11px", color:G.ink3, lineHeight:1.7, padding:"10px 12px",
+            background:G.ivory, border:`0.5px solid ${G.stone}`, borderRadius:"4px" }}>
+            ⚠ Precios Mercado de Abastos GDL jul 2025. Validar con Alan en sesión de costeo.
+            Merma actual: {Math.round(merma*100)}%. Logística es promedio ZMG — varía por zona y volumen.
+            Estos datos son confidenciales y no deben compartirse antes de firmar NDA.
+          </p>
+        </div>
+      </div>
+    </div>
     </div>
   );
 }
