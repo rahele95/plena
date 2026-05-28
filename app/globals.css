@@ -1,25 +1,39 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --green: #1a4a2e;
-  --green-mid: #2d6b45;
-  --green-light: #4a9463;
-  --lime: #a8d94a;
-  --cream: #f8faf5;
-  --ink: #0f1f12;
-  --ink-mid: #2d3a2e;
-  --ink-soft: #6b7c6d;
+  /* Nueva paleta — Old Money / Wellness Premium */
+  --linen:   #f5f0e8;      /* lino tostado — fondo principal */
+  --ivory:   #faf7f2;      /* marfil — superficies blancas */
+  --stone:   #c8bfb0;      /* piedra — bordes y secundario */
+  --stone-d: #9e9385;      /* piedra oscura */
+  --night:   #1c2b1e;      /* verde noche — primario */
+  --night-m: #2d4030;      /* verde noche medio */
+  --night-l: #4a6350;      /* verde noche claro */
+  --sage:    #7a9b7e;      /* salvia — acento suave */
+  --sage-l:  #a8c4a0;      /* salvia claro */
+  --ink:     #1a1814;      /* tinta — texto principal */
+  --ink-m:   #3d3830;      /* tinta media */
+  --ink-s:   #7a736a;      /* tinta suave */
+  --rule:    rgba(26,24,20,0.1);
+  --rule-l:  rgba(26,24,20,0.06);
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
-  background: var(--cream);
+  background: var(--linen);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
-::selection { background: rgba(168,217,74,0.25); color: var(--green); }
+
+::selection {
+  background: rgba(122,155,126,0.2);
+  color: var(--night);
+}
+
 ::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--cream); }
-::-webkit-scrollbar-thumb { background: rgba(45,107,69,0.3); border-radius: 2px; }
+::-webkit-scrollbar-track { background: var(--linen); }
+::-webkit-scrollbar-thumb { background: var(--stone); border-radius: 2px; }
