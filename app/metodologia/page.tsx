@@ -22,37 +22,37 @@ const NAV: { id: Section; label: string; emoji: string }[] = [
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 const g = {
   // colors
-  green:   "#1a4a2e",
-  gm:      "#2d6b45",
-  gl:      "#4a9463",
-  lime:    "#a8d94a",
-  cream:   "#f8faf5",
-  light:   "#f0f7ea",
+  green:   "#1c2b1e",
+  gm:      "#2d4030",
+  gl:      "#7a9b7e",
+  lime:    "#a8c4a0",
+  cream:   "#f5f0e8",
+  light:   "#ede8dc",
   sand:    "#ede8dc",
-  ink:     "#0f1f12",
-  ink2:    "#2d3a2e",
-  ink3:    "#6b7c6d",
+  ink:     "#1c2b1e",
+  ink2:    "#3d3830",
+  ink3:    "#7a736a",
   rule:    "rgba(15,31,18,0.08)",
   ruleD:   "rgba(248,250,245,0.08)",
   // fonts
-  serif:   "'Plus Jakarta Sans', system-ui, sans-serif",
+  serif:   "'Cormorant Garamond', system-ui, sans-serif",
   sans:    "'DM Sans', system-ui, sans-serif",
 };
 
 const t = {
   eyebrow: { fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: g.gl, marginBottom: "10px" },
   eyebrowL: { fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: g.lime, marginBottom: "10px" },
-  h2: { fontFamily: g.serif, fontSize: "clamp(1.8rem,3.5vw,2.6rem)", fontWeight: 600 as const, color: g.ink, letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "12px" },
-  h2L: { fontFamily: g.serif, fontSize: "clamp(1.8rem,3.5vw,2.6rem)", fontWeight: 600 as const, color: g.cream, letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "12px" },
-  h3: { fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 600 as const, color: g.ink, marginBottom: "6px", lineHeight: 1.25 },
-  h3L: { fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 600 as const, color: g.cream, marginBottom: "6px", lineHeight: 1.25 },
+  h2: { fontFamily: g.serif, fontSize: "clamp(1.8rem,3.5vw,2.6rem)", fontWeight: 400 as const, color: g.ink, letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "12px" },
+  h2L: { fontFamily: g.serif, fontSize: "clamp(1.8rem,3.5vw,2.6rem)", fontWeight: 400 as const, color: g.cream, letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "12px" },
+  h3: { fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 400 as const, color: g.ink, marginBottom: "6px", lineHeight: 1.25 },
+  h3L: { fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 400 as const, color: g.cream, marginBottom: "6px", lineHeight: 1.25 },
   p: { fontFamily: g.sans, fontSize: "14px", lineHeight: 1.8, color: g.ink3 },
   pL: { fontFamily: g.sans, fontSize: "14px", lineHeight: 1.8, color: "rgba(248,250,245,0.5)" },
   label: { fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: g.ink3, marginBottom: "4px" },
 };
 
-const card = { background: "white", borderRadius: "14px", border: `0.5px solid rgba(15,31,18,0.08)`, padding: "1.25rem" };
-const cardD = { background: "rgba(248,250,245,0.04)", border: `0.5px solid rgba(248,250,245,0.08)`, borderRadius: "14px", padding: "1.25rem" };
+const card = { background: "white", borderRadius: "4px", border: `0.5px solid rgba(15,31,18,0.08)`, padding: "1.25rem" };
+const cardD = { background: "rgba(248,250,245,0.04)", border: `0.5px solid rgba(248,250,245,0.08)`, borderRadius: "4px", padding: "1.25rem" };
 const sec = { padding: "4rem 2rem" };
 const secD = { padding: "4rem 2rem", background: g.ink };
 const secL = { padding: "4rem 2rem", background: g.light };
@@ -70,11 +70,11 @@ function Tag({ c="lime", children }: { c?: string; children: React.ReactNode }) 
     gray: [g.ink3, "rgba(15,31,18,0.06)", g.rule],
   };
   const [col, bg, border] = colors[c] || colors.lime;
-  return <span style={{ fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" as const, padding: "3px 10px", borderRadius: "100px", background: bg, border: `0.5px solid ${border}`, color: col, display: "inline-block" }}>{children}</span>;
+  return <span style={{ fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" as const, padding: "3px 10px", borderRadius: "2px", background: bg, border: `0.5px solid ${border}`, color: col, display: "inline-block" }}>{children}</span>;
 }
 
 function Pill({ children, dark }: { children: React.ReactNode; dark?: boolean }) {
-  return <span style={{ fontFamily: g.sans, fontSize: "12px", padding: "4px 12px", background: dark ? "rgba(248,250,245,0.07)" : "rgba(15,31,18,0.04)", border: `0.5px solid ${dark ? "rgba(248,250,245,0.12)" : g.rule}`, borderRadius: "100px", color: dark ? "rgba(248,250,245,0.55)" : g.ink3, display: "inline-block", margin: "3px" }}>{children}</span>;
+  return <span style={{ fontFamily: g.sans, fontSize: "12px", padding: "4px 12px", background: dark ? "rgba(248,250,245,0.07)" : "rgba(15,31,18,0.04)", border: `0.5px solid ${dark ? "rgba(248,250,245,0.12)" : g.rule}`, borderRadius: "2px", color: dark ? "rgba(248,250,245,0.55)" : g.ink3, display: "inline-block", margin: "3px" }}>{children}</span>;
 }
 
 function Divider({ dark }: { dark?: boolean }) {
@@ -88,7 +88,7 @@ function KpiRow({ name, target, freq, dark }: { name: string; target: string; fr
         <div style={{ fontFamily: g.sans, fontSize: "13px", fontWeight: 500, color: dark ? "rgba(248,250,245,0.75)" : g.ink2 }}>{name}</div>
         <div style={{ fontFamily: g.sans, fontSize: "11px", color: dark ? "rgba(248,250,245,0.3)" : g.ink3 }}>{freq}</div>
       </div>
-      <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 600, color: dark ? g.lime : g.green, whiteSpace: "nowrap" as const }}>{target}</div>
+      <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 400, color: dark ? g.lime : g.green, whiteSpace: "nowrap" as const }}>{target}</div>
     </div>
   );
 }
@@ -103,11 +103,11 @@ export default function Metodologia() {
       {/* TOP HERO */}
       <div style={{ background: g.ink, padding: "7rem 2rem 3rem" }}>
         <div style={wrap}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(168,217,74,0.1)", border: "0.5px solid rgba(168,217,74,0.25)", borderRadius: "100px", padding: "4px 14px", marginBottom: "1.5rem" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(168,217,74,0.1)", border: "0.5px solid rgba(168,217,74,0.25)", borderRadius: "2px", padding: "4px 14px", marginBottom: "1.5rem" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: g.lime, flexShrink: 0 }} />
             <span style={{ fontFamily: g.sans, fontSize: "11px", color: g.lime, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Documento interno · Plena · 2026</span>
           </div>
-          <h1 style={{ fontFamily: g.serif, fontSize: "clamp(2.8rem,6vw,4.5rem)", fontWeight: 600, color: g.cream, letterSpacing: "-0.02em", lineHeight: 1.05, maxWidth: 760, marginBottom: "1rem" }}>
+          <h1 style={{ fontFamily: g.serif, fontSize: "clamp(2.8rem,6vw,4.5rem)", fontWeight: 400, color: g.cream, letterSpacing: "-0.02em", lineHeight: 1.05, maxWidth: 760, marginBottom: "1rem" }}>
             El playbook de <span style={{ color: g.lime }}>Plena.</span>
           </h1>
           <p style={{ fontFamily: g.sans, fontSize: "15px", lineHeight: 1.8, color: "rgba(248,250,245,0.45)", maxWidth: 580, marginBottom: "2rem" }}>
@@ -117,7 +117,7 @@ export default function Metodologia() {
           <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" as const }}>
             {[["3","Planes de alimentación"],["5","Protocolos médicos"],["7","Secciones operativas"],["24","Meses al objetivo"]].map(([n,l]) => (
               <div key={l}>
-                <div style={{ fontFamily: g.serif, fontSize: "1.8rem", fontWeight: 600, color: g.lime, lineHeight: 1 }}>{n}</div>
+                <div style={{ fontFamily: g.serif, fontSize: "1.8rem", fontWeight: 400, color: g.lime, lineHeight: 1 }}>{n}</div>
                 <div style={{ fontFamily: g.sans, fontSize: "11px", color: "rgba(248,250,245,0.3)", marginTop: 2 }}>{l}</div>
               </div>
             ))}
@@ -152,7 +152,7 @@ export default function Metodologia() {
                   {[["😤","Tiempo","Profesionistas con 12h de trabajo no tienen tiempo de cocinar bien"],["🤷","Conocimiento","Nadie les dice qué comer con evidencia real, solo Instagram"],["🏥","Condición médica","Diabéticos, hipertensos y atletas no tienen opciones curadas"]].map(([icon,t1,t2]) => (
                     <div key={t1} style={{ ...cardD, display: "flex", gap: "12px" }}>
                       <span style={{ fontSize: 24 }}>{icon}</span>
-                      <div><div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 600, color: g.cream, marginBottom: 4 }}>{t1}</div><div style={{ fontFamily: g.sans, fontSize: "12px", color: "rgba(248,250,245,0.4)", lineHeight: 1.55 }}>{t2}</div></div>
+                      <div><div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 400, color: g.cream, marginBottom: 4 }}>{t1}</div><div style={{ fontFamily: g.sans, fontSize: "12px", color: "rgba(248,250,245,0.4)", lineHeight: 1.55 }}>{t2}</div></div>
                     </div>
                   ))}
                 </div>
@@ -166,12 +166,12 @@ export default function Metodologia() {
               <div style={grid3}>
                 <div style={{ ...card, borderTop: `3px solid ${g.lime}` }}>
                   <div style={{ fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" as const, color: g.gl, marginBottom: 10 }}>Misión</div>
-                  <div style={{ fontFamily: g.serif, fontSize: "1.15rem", fontWeight: 600, color: g.ink, lineHeight: 1.3, marginBottom: 10 }}>Hacer que comer bien sea la opción más fácil del día.</div>
+                  <div style={{ fontFamily: g.serif, fontSize: "1.15rem", fontWeight: 400, color: g.ink, lineHeight: 1.3, marginBottom: 10 }}>Hacer que comer bien sea la opción más fácil del día.</div>
                   <p style={{ ...t.p, fontSize: "13px" }}>Chef profesional + nutriólogo certificado + entrega a domicilio. No como aspiración — como producto concreto y asequible.</p>
                 </div>
                 <div style={{ ...card, borderTop: `3px solid ${g.gm}` }}>
                   <div style={{ fontFamily: g.sans, fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" as const, color: g.gl, marginBottom: 10 }}>Visión</div>
-                  <div style={{ fontFamily: g.serif, fontSize: "1.15rem", fontWeight: 600, color: g.ink, lineHeight: 1.3, marginBottom: 10 }}>Ser el sistema de nutrición de referencia en México para 2028.</div>
+                  <div style={{ fontFamily: g.serif, fontSize: "1.15rem", fontWeight: 400, color: g.ink, lineHeight: 1.3, marginBottom: 10 }}>Ser el sistema de nutrición de referencia en México para 2028.</div>
                   <p style={{ ...t.p, fontSize: "13px" }}>Primero Guadalajara. Luego CDMX y Monterrey. Marca registrada, modelo replicable, comunidad activa.</p>
                 </div>
                 <div style={{ ...card, borderTop: `3px solid rgba(168,217,74,0.3)` }}>
@@ -190,7 +190,7 @@ export default function Metodologia() {
               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
                 {["Etiqueta nutricional completa en cada envase","Planes por condición médica (diabetes, corazón)","Nutriólogo integrado en el servicio","Empaque al vacío de calidad exportación","App de pedidos + perfil de cliente (Fase 2)","Suplementación basada en análisis de sangre","Cocina industrial certificada","Protocolo de trazabilidad por lote"].map(g2 => (
                   <div key={g2} style={{ display: "flex", gap: 6, alignItems: "center", padding: "8px 14px", background: "rgba(168,217,74,0.07)", border: "0.5px solid rgba(168,217,74,0.2)", borderRadius: 10 }}>
-                    <span style={{ color: "#a8d94a", fontSize: 12 }}>✓</span>
+                    <span style={{ color: "#a8c4a0", fontSize: 12 }}>✓</span>
                     <span style={{ fontFamily: g.sans, fontSize: "12px", color: g.ink2 }}>{g2}</span>
                   </div>
                 ))}
@@ -215,7 +215,7 @@ export default function Metodologia() {
                 ].map((plan, i) => (
                   <div key={plan.id} style={{ ...card, display: "grid", gridTemplateColumns: "64px 1fr auto", gap: "1.5rem", alignItems: "flex-start" }}>
                     <div>
-                      <div style={{ fontFamily: g.serif, fontSize: "2rem", fontWeight: 700, color: "rgba(168,217,74,0.25)", lineHeight: 1 }}>{plan.id}</div>
+                      <div style={{ fontFamily: g.serif, fontSize: "2rem", fontWeight: 500, color: "rgba(168,217,74,0.25)", lineHeight: 1 }}>{plan.id}</div>
                       <Tag c={i===1?"lime":"green"}>{plan.tag}</Tag>
                     </div>
                     <div>
@@ -231,7 +231,7 @@ export default function Metodologia() {
                       </div>
                     </div>
                     <div style={{ textAlign: "right" as const }}>
-                      <div style={{ fontFamily: g.serif, fontSize: "1.6rem", fontWeight: 700, color: g.green }}>{plan.price}</div>
+                      <div style={{ fontFamily: g.serif, fontSize: "1.6rem", fontWeight: 500, color: g.green }}>{plan.price}</div>
                       <div style={{ fontFamily: g.sans, fontSize: "11px", color: g.ink3 }}>{plan.unit}</div>
                       <div style={{ fontFamily: g.sans, fontSize: "11px", color: g.gl, marginTop: 4 }}>{plan.moments} momentos/día</div>
                     </div>
@@ -284,7 +284,7 @@ export default function Metodologia() {
                 ].map((s, i) => (
                   <div key={s.step} style={{ ...card, display: "grid", gridTemplateColumns: "56px 1fr auto", gap: "1.25rem", alignItems: "flex-start" }}>
                     <div style={{ width: 48, height: 48, borderRadius: "50%", background: g.green, border: `3px solid ${g.lime}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <span style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 700, color: g.lime }}>{s.step}</span>
+                      <span style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 500, color: g.lime }}>{s.step}</span>
                     </div>
                     <div>
                       <div style={{ display: "flex", gap: 8, marginBottom: 4, flexWrap: "wrap" as const }}>
@@ -298,7 +298,7 @@ export default function Metodologia() {
                     </div>
                     <div style={{ textAlign: "right" as const, minWidth: 100 }}>
                       <div style={{ fontFamily: g.sans, fontSize: "11px", color: g.ink3 }}>Responsable</div>
-                      <div style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 600, color: g.green, lineHeight: 1.3 }}>{s.owner}</div>
+                      <div style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 400, color: g.green, lineHeight: 1.3 }}>{s.owner}</div>
                       <div style={{ fontFamily: g.sans, fontSize: "11px", color: g.lime, marginTop: 4 }}>{s.time}</div>
                     </div>
                   </div>
@@ -320,8 +320,8 @@ export default function Metodologia() {
                   { day:"Sáb", title:"Retrospectiva", tasks:["Revisión de feedback semanal","Ajustes de recetas","Seguimiento de KPIs","Check-in con clientes activos"] },
                 ].map(d => (
                   <div key={d.day} style={card}>
-                    <div style={{ fontFamily: g.serif, fontSize: "1rem", fontWeight: 700, color: g.lime, marginBottom: 2 }}>{d.day}</div>
-                    <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 600, color: g.ink, marginBottom: 10, lineHeight: 1.25 }}>{d.title}</div>
+                    <div style={{ fontFamily: g.serif, fontSize: "1rem", fontWeight: 500, color: g.lime, marginBottom: 2 }}>{d.day}</div>
+                    <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 400, color: g.ink, marginBottom: 10, lineHeight: 1.25 }}>{d.title}</div>
                     {d.tasks.map(tk => (
                       <div key={tk} style={{ display: "flex", gap: 6, marginBottom: 5 }}>
                         <span style={{ color: g.lime, flexShrink: 0, fontSize: 10, marginTop: 3 }}>→</span>
@@ -373,7 +373,7 @@ export default function Metodologia() {
                 { cat:"Logística", items:["Repartidor propio o servicio de última milla","Hieleras térmicas certificadas para alimentos","App de coordinación de rutas"] },
               ].map(g3 => (
                 <div key={g3.cat} style={card}>
-                  <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 600, color: g.green, marginBottom: 10 }}>{g3.cat}</div>
+                  <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 400, color: g.green, marginBottom: 10 }}>{g3.cat}</div>
                   {g3.items.map(item => (
                     <div key={item} style={{ display: "flex", gap: 8, marginBottom: 6 }}>
                       <span style={{ color: g.lime, flexShrink: 0, fontSize: 10, marginTop: 3 }}>◆</span>
@@ -403,13 +403,13 @@ export default function Metodologia() {
                 ].map(r => (
                   <div key={r.phase} style={{ ...cardD, borderTop: `3px solid ${r.status==="active"?g.lime:r.status==="planned"?"rgba(168,217,74,0.3)":"rgba(248,250,245,0.08)"}` }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                      <span style={{ fontFamily: g.serif, fontSize: "12px", fontWeight: 700, color: r.status==="active"?g.lime:"rgba(248,250,245,0.3)" }}>{r.phase}</span>
-                      <span style={{ fontFamily: g.sans, fontSize: "9px", padding: "2px 8px", borderRadius: "100px", background: r.status==="active"?"rgba(168,217,74,0.15)":"rgba(248,250,245,0.05)", color: r.status==="active"?g.lime:"rgba(248,250,245,0.25)" }}>
+                      <span style={{ fontFamily: g.serif, fontSize: "12px", fontWeight: 500, color: r.status==="active"?g.lime:"rgba(248,250,245,0.3)" }}>{r.phase}</span>
+                      <span style={{ fontFamily: g.sans, fontSize: "9px", padding: "2px 8px", borderRadius: "2px", background: r.status==="active"?"rgba(168,217,74,0.15)":"rgba(248,250,245,0.05)", color: r.status==="active"?g.lime:"rgba(248,250,245,0.25)" }}>
                         {r.status==="active"?"En curso":r.status==="planned"?"Próximo":"Futuro"}
                       </span>
                     </div>
                     <div style={{ fontFamily: g.sans, fontSize: "11px", color: "rgba(248,250,245,0.25)", marginBottom: 4 }}>{r.period}</div>
-                    <div style={{ fontFamily: g.serif, fontSize: "15px", fontWeight: 600, color: g.cream, marginBottom: 12, lineHeight: 1.25 }}>{r.title}</div>
+                    <div style={{ fontFamily: g.serif, fontSize: "15px", fontWeight: 400, color: g.cream, marginBottom: 12, lineHeight: 1.25 }}>{r.title}</div>
                     {r.items.map(item => (
                       <div key={item} style={{ display: "flex", gap: 8, marginBottom: 5 }}>
                         <span style={{ color: r.status==="active"?g.lime:"rgba(248,250,245,0.2)", flexShrink: 0, fontSize: 9, marginTop: 4 }}>◆</span>
@@ -448,7 +448,7 @@ export default function Metodologia() {
                   ]},
                 ].map(group => (
                   <div key={group.cat} style={card}>
-                    <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 700, color: g.green, marginBottom: 12, paddingBottom: 8, borderBottom: `2px solid ${g.lime}` }}>{group.cat}</div>
+                    <div style={{ fontFamily: g.serif, fontSize: "14px", fontWeight: 500, color: g.green, marginBottom: 12, paddingBottom: 8, borderBottom: `2px solid ${g.lime}` }}>{group.cat}</div>
                     {group.items.map(k => <KpiRow key={k.n} name={k.n} target={k.t} freq={k.f} />)}
                   </div>
                 ))}
@@ -470,17 +470,17 @@ export default function Metodologia() {
                   { src:"Comisiones / venta directa de planes", mec:"Precio por comida × volumen semanal", when:"Mes 1", pot:"$25k–80k MXN/mes", color: g.lime },
                   { src:"Fee de consulta con nutriólogo", mec:"$600–900 MXN por consulta inicial", when:"Mes 2", pot:"$8k–18k MXN/mes", color: g.gm },
                   { src:"Suscripción mensual VIP", mec:"$3,500–6,000 MXN / mes todo incluido", when:"Mes 3", pot:"$35k–80k MXN/mes", color: g.gl },
-                  { src:"Venta de suplementación", mec:"Margen 30–40% sobre precio de costo", when:"Mes 4", pot:"$5k–15k MXN/mes", color: "#4a9463" },
+                  { src:"Venta de suplementación", mec:"Margen 30–40% sobre precio de costo", when:"Mes 4", pot:"$5k–15k MXN/mes", color: "#7a9b7e" },
                   { src:"Colaboraciones y B2B (oficinas)", mec:"Convenios con empresas para lunch corporativo", when:"Mes 6", pot:"Variable", color: "rgba(168,217,74,0.6)" },
                 ].map((r, i) => (
                   <div key={r.src} style={{ ...card, display: "grid", gridTemplateColumns: "4px 1fr auto", gap: "1rem", alignItems: "center" }}>
                     <div style={{ width: 4, height: "100%", background: r.color, borderRadius: 2 }} />
                     <div>
-                      <div style={{ fontFamily: g.serif, fontSize: "15px", fontWeight: 600, color: g.ink, marginBottom: 3 }}>{r.src}</div>
+                      <div style={{ fontFamily: g.serif, fontSize: "15px", fontWeight: 400, color: g.ink, marginBottom: 3 }}>{r.src}</div>
                       <div style={{ fontFamily: g.sans, fontSize: "12px", color: g.ink3 }}>{r.mec}</div>
                     </div>
                     <div style={{ textAlign: "right" as const, minWidth: 130 }}>
-                      <div style={{ fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 700, color: g.green }}>{r.pot}</div>
+                      <div style={{ fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 500, color: g.green }}>{r.pot}</div>
                       <div style={{ fontFamily: g.sans, fontSize: "11px", color: g.ink3 }}>Activo desde {r.when}</div>
                     </div>
                   </div>
@@ -502,7 +502,7 @@ export default function Metodologia() {
                   ].map(([cat, val]) => (
                     <div key={cat} style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: `0.5px solid ${g.rule}` }}>
                       <span style={{ fontFamily: g.sans, fontSize: "13px", color: g.ink2 }}>{cat}</span>
-                      <span style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 600, color: cat.includes("Margen") ? g.green : g.ink3 }}>{val}</span>
+                      <span style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 400, color: cat.includes("Margen") ? g.green : g.ink3 }}>{val}</span>
                     </div>
                   ))}
                 </div>
@@ -521,7 +521,7 @@ export default function Metodologia() {
                       <div style={{ background: `rgba(168,217,74,0.15)`, borderRadius: 4, height: 8, flex: 1 }}>
                         <div style={{ background: g.lime, borderRadius: 4, height: 8, width: `${Math.min(100,(p.clients/600)*100)}%` }} />
                       </div>
-                      <span style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 700, color: g.green, minWidth: 80, textAlign: "right" as const }}>{p.mrr}</span>
+                      <span style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 500, color: g.green, minWidth: 80, textAlign: "right" as const }}>{p.mrr}</span>
                     </div>
                   ))}
                   <div style={{ fontFamily: g.sans, fontSize: "11px", color: g.ink3, marginTop: 8 }}>Escenario conservador · Clientes activos promedio $1,800 MXN/semana</div>
@@ -550,7 +550,7 @@ export default function Metodologia() {
                   { n:"05", title:"Sistema, no producto suelto", desc:"Plan + comida + suplemento + seguimiento. La app y el perfil son parte del producto, no solo canal de venta." },
                 ].map(p => (
                   <div key={p.n} style={card}>
-                    <div style={{ fontFamily: g.serif, fontSize: "2rem", fontWeight: 700, color: "rgba(168,217,74,0.2)", lineHeight: 1, marginBottom: 8 }}>{p.n}</div>
+                    <div style={{ fontFamily: g.serif, fontSize: "2rem", fontWeight: 500, color: "rgba(168,217,74,0.2)", lineHeight: 1, marginBottom: 8 }}>{p.n}</div>
                     <div style={t.h3}>{p.title}</div>
                     <p style={{ ...t.p, fontSize: "13px" }}>{p.desc}</p>
                   </div>
@@ -567,9 +567,9 @@ export default function Metodologia() {
                   <div style={t.eyebrow}>Identidad visual</div>
                   <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
                     {[
-                      { label:"Paleta primaria", val:"Verde #1a4a2e · Lima #a8d94a · Blanco #f8faf5" },
-                      { label:"Paleta secundaria", val:"Verde oscuro #0f1f12 · Verde medio #2d6b45" },
-                      { label:"Tipografía display", val:"Plus Jakarta Sans (600) — títulos y números" },
+                      { label:"Paleta primaria", val:"Verde #1c2b1e · Lima #a8c4a0 · Blanco #f5f0e8" },
+                      { label:"Paleta secundaria", val:"Verde oscuro #1c2b1e · Verde medio #2d4030" },
+                      { label:"Tipografía display", val:"Cormorant Garamond (600) — títulos y números" },
                       { label:"Tipografía cuerpo", val:"DM Sans (400/500) — párrafos y UI" },
                       { label:"Fotografía", val:"Comida real en contenedores del producto. Sin stock, sin modelos imposibles." },
                     ].map(({label,val}) => (
@@ -591,7 +591,7 @@ export default function Metodologia() {
                       { attr:"Honesto", desc:"Si algo no quedó perfecto esta semana, Adriana lo dice. La transparencia construye." },
                     ].map(({attr,desc}) => (
                       <div key={attr} style={{ ...card, display: "flex", gap: 10, padding: "10px 14px" }}>
-                        <div style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 700, color: g.green, minWidth: 80 }}>{attr}</div>
+                        <div style={{ fontFamily: g.serif, fontSize: "13px", fontWeight: 500, color: g.green, minWidth: 80 }}>{attr}</div>
                         <div style={{ fontFamily: g.sans, fontSize: "12px", color: g.ink3, lineHeight: 1.5 }}>{desc}</div>
                       </div>
                     ))}
@@ -624,8 +624,8 @@ export default function Metodologia() {
                 <div key={db.id} style={{ ...card, borderLeft: `4px solid ${db.color}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap" as const, gap: 8 }}>
                     <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                      <span style={{ fontFamily: g.serif, fontSize: "1.5rem", fontWeight: 700, color: `${db.color}44` }}>{db.id}</span>
-                      <div style={{ fontFamily: g.serif, fontSize: "1.05rem", fontWeight: 600, color: g.ink }}>{db.name}</div>
+                      <span style={{ fontFamily: g.serif, fontSize: "1.5rem", fontWeight: 500, color: `${db.color}44` }}>{db.id}</span>
+                      <div style={{ fontFamily: g.serif, fontSize: "1.05rem", fontWeight: 400, color: g.ink }}>{db.name}</div>
                     </div>
                     <Tag c="green">{db.fields.length} campos</Tag>
                   </div>
@@ -692,7 +692,7 @@ export default function Metodologia() {
                   <div key={c.name} style={{ ...card, display: "flex", gap: "1rem", alignItems: "flex-start" }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
-                        <div style={{ fontFamily: g.serif, fontSize: "15px", fontWeight: 600, color: g.ink }}>{c.name}</div>
+                        <div style={{ fontFamily: g.serif, fontSize: "15px", fontWeight: 400, color: g.ink }}>{c.name}</div>
                         <Tag c={c.bdgC}>{c.badge}</Tag>
                       </div>
                       <div style={{ fontFamily: g.sans, fontSize: "12px", color: g.ink3, lineHeight: 1.5 }}>{c.use}</div>
@@ -750,7 +750,7 @@ export default function Metodologia() {
                   { p:"5%", title:"Oferta y conversión", desc:"Solo 1 de cada 20 posts vende directamente. El resto construye confianza." },
                 ].map(p => (
                   <div key={p.title} style={card}>
-                    <div style={{ fontFamily: g.serif, fontSize: "1.5rem", fontWeight: 700, color: g.lime, lineHeight: 1, marginBottom: 6 }}>{p.p}</div>
+                    <div style={{ fontFamily: g.serif, fontSize: "1.5rem", fontWeight: 500, color: g.lime, lineHeight: 1, marginBottom: 6 }}>{p.p}</div>
                     <div style={t.h3}>{p.title}</div>
                     <p style={{ ...t.p, fontSize: "12px" }}>{p.desc}</p>
                   </div>
@@ -773,10 +773,10 @@ export default function Metodologia() {
       <div style={{ background: g.ink, padding: "2rem", borderTop: `2px solid ${g.lime}` }}>
         <div style={{ ...wrap, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: "1rem" }}>
           <div>
-            <div style={{ fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 700, color: g.lime }}>plena · Playbook interno</div>
+            <div style={{ fontFamily: g.serif, fontSize: "1.1rem", fontWeight: 500, color: g.lime }}>plena · Playbook interno</div>
             <div style={{ fontFamily: g.sans, fontSize: "12px", color: "rgba(248,250,245,0.25)", marginTop: 2 }}>Versión 1.0 · Mayo 2026 · Documento vivo</div>
           </div>
-          <Link href="/" style={{ fontFamily: g.sans, fontSize: "13px", fontWeight: 500, padding: "10px 24px", background: g.lime, color: g.ink, borderRadius: "100px", textDecoration: "none" }}>← Volver al sitio</Link>
+          <Link href="/" style={{ fontFamily: g.sans, fontSize: "13px", fontWeight: 500, padding: "10px 24px", background: g.lime, color: g.ink, borderRadius: "2px", textDecoration: "none" }}>← Volver al sitio</Link>
         </div>
       </div>
 
