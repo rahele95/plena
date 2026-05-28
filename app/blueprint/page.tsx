@@ -169,7 +169,7 @@ export default function Blueprint() {
               </div>
             ))}
           </div>
-          <p style={{ ...t.p, marginTop: "16px" }}>Próximamente: suplementación mensual + colaciones/snacks. Sin descuentos bajo ningún concepto — la estrategia de precio es la propuesta de valor.</p>
+          <p style={{ ...t.p, marginTop: "16px" }}>Suplementación con análisis de sangre: plan personalizado por condición. Sin descuentos bajo ningún concepto — la estrategia de precio es la propuesta de valor.</p>
         </div>
 
         {/* 04 Modelo de negocio */}
@@ -262,7 +262,7 @@ export default function Blueprint() {
           <h2 style={t.h2}>Lo que falta resolver</h2>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px" }}>
             {[
-              { p: "🔴", g: "Nutriólogo clínico", d: "Bloquea los planes médicos. Riesgo legal sin él." },
+              { p: "🔴", g: "Nutriólogo clínico", d: "Prioridad esta semana. Bloquea planes médicos Y suplementación. Riesgo legal sin él." },
               { p: "🔴", g: "Constitución legal / RFC", d: "Persona física o SA de CV. Antes del primer cliente." },
               { p: "🔴", g: "Seguro de responsabilidad civil", d: "Alimentos + condiciones médicas = riesgo real." },
               { p: "🟡", g: "Logística de entrega", d: "Borzo / iVoy / repartidor propio. Definir antes del beta." },
