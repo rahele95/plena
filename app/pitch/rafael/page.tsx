@@ -87,7 +87,7 @@ export default function PitchRafael() {
         Una reunión de 45 minutos para conocer la operación, validar la capacidad de la cocina y alinear los términos. Sin compromiso de tu parte hasta que firmes.
       </p>
       <p style={{ fontFamily: g.sans, fontSize: "13px", color: g.ink3, lineHeight: 1.7, padding: "1rem", background: g.ivory, border: `0.5px solid ${g.stone}`, borderRadius: "4px" }}>
-        También verificaremos el estatus COFEPRIS de la cocina — un requisito para poder operar los planes médicos y el que nos da mayor diferenciación en el mercado.
+        Verificaremos el estatus COFEPRIS de la cocina — requisito para operar los planes médicos — y alinearemos el proceso de etiquetado NOM-051 (etiquetado nutricional obligatorio en México). Estos dos requisitos son los que convierten a El Romeral en la primera cocina certificada del modelo, y nos diferencian de cualquier competidor local.
       </p>
     </div>
   );
