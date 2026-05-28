@@ -38,7 +38,7 @@ const PHASES: Phase[] = [
       { label: "Firmar NDA · Alan", status: "pending", note: "Antes de revelar modelo" },
       { label: "Reunión Alan · socio operativo", status: "pending", note: "Requiere: NDA firmado" },
       { label: "Reunión Luis Fer · NetLab", status: "pending", note: "Requiere: deck tech" },
-      { label: "Búsqueda nutriólogo clínico", status: "blocked", note: "Gap crítico — CUCS / UAG / UdG" },
+      { label: "Búsqueda nutriólogo clínico", status: "active", note: "Prioridad esta semana — CUCS / UAG / UdG" },
     ],
   },
   {
@@ -51,6 +51,7 @@ const PHASES: Phase[] = [
       { label: "Proveedor empaque al vacío", status: "pending", note: "Con certificación COFEPRIS" },
       { label: "Sistema de cobro", status: "pending", note: "Clip / Stripe / SPEI" },
       { label: "Fotografía de producto", status: "pending" },
+      { label: "Proveedor suplementación", status: "pending", note: "Revenue stream activo desde Mes 2" },
     ],
   },
   {
