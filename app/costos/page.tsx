@@ -125,7 +125,7 @@ const PLANES = [
   { k:"estandar", l:"Semanal estándar",        precio_base:200, condicion:"general"       },
   { k:"medico",   l:"Médico personalizado",    precio_base:300, condicion:"diabetes"      },
   { k:"cardio",   l:"Médico cardiovascular",   precio_base:300, condicion:"cardiovascular"},
-  { k:"kids",     l:"Lunch Kids",              precio_base:140, condicion:"general"       },
+  { k:"kids",     l:"Lunch Kids",              precio_base:150, condicion:"general"       },
 ];
 
 const CONDICIONES = [
