@@ -102,7 +102,7 @@ export default function PitchIndex() {
                 ["Semanal estándar","Comida semanal con etiqueta nutricional completa","$180–220 MXN"],
                 ["Médico personalizado","Por condición: diabetes, cardiovascular, control de peso","$250–350 MXN"],
                 ["Lunch Kids","Almuerzo escolar saludable con control nutricional","$120–160 MXN"],
-                ["Suplementación","Plan mensual basado en análisis de sangre","A definir"],
+                ["Suplementación","Plan mensual con análisis de sangre. Revenue stream activo desde Mes 2","$TBD con nutriólogo"],
               ].map(([plan,desc,precio],i)=>(
                 <tr key={i} style={{borderBottom:`0.5px solid ${g.stone}20`}}>
                   <td style={{fontFamily:g.sans,fontSize:"13px",color:g.night,padding:"10px 14px",fontWeight:500}}>{plan}</td>
