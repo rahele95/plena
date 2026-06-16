@@ -102,7 +102,7 @@ export default function Contacto() {
               {[
                 ["01 · Recibes tu propuesta","En menos de 24 horas: plan recomendado y cotización personalizada."],
                 ["02 · Personalizamos juntas","Si hay condición médica o meta específica, entra el nutriólogo."],
-                ["03 · Lo cocinamos","Cocina industrial, empaque al vacío, etiqueta nutricional. Sin atajos."],
+                ["03 · Lo cocinamos","Cocina industrial, empaque premium, etiqueta nutricional NOM-051. Sin atajos."],
                 ["04 · Llega a tu puerta","Entrega semanal coordinada contigo. Listo para calentar y comer."],
                 ["05 · Seguimiento real","Check-in semanal. Ajustamos lo que sea necesario."],
               ].map(([t, b]) => (
