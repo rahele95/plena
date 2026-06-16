@@ -53,7 +53,7 @@ export default function PitchIndex() {
             {icon:"🩺", t:"Planes por condición",   d:"Diabetes, cardiovascular, control de peso, bienestar general."},
             {icon:"🧴", t:"Suplementación",         d:"Plan de suplementos basado en análisis de sangre del cliente."},
             {icon:"📦", t:"Empaque al vacío",       d:"Vida útil extendida, higiene certificada, presentación premium."},
-            {icon:"🚗", t:"Entrega a domicilio",    d:"GDL y zona metropolitana. Semanal o según plan."},
+            {icon:"🚗", t:"Entrega a domicilio",    d:"Zapopan, Valle Real, Solares, Cd Granja, Bosques Vallarta. Entrega semanal."},
           ].map((item,i)=>(
             <div key={i} style={{background:"white",border:`0.5px solid ${g.stone}`,borderRadius:"6px",padding:"1rem"}}>
               <p style={{fontSize:"18px",marginBottom:"4px"}}>{item.icon}</p>
