@@ -4,14 +4,14 @@ import Link from "next/link";
 const plans = [
   { num:"01", name:"Plan semanal", sub:"El punto de entrada", price:"$180–220", unit:"MXN / comida", desc:"Menú elaborado semanalmente por nuestro chef. 5 momentos del día, lunes a viernes. Cada envase con etiqueta nutricional completa.", tag:"Más popular" },
   { num:"02", name:"Plan personalizado", sub:"Con nutriólogo incluido", price:"$250–350", unit:"MXN / comida", desc:"Consulta inicial con nutriólogo. Plan diseñado para tu condición exacta — pérdida de peso, diabetes, rendimiento, cardiovascular.", tag:"Mayor impacto" },
-  { num:"03", name:"Lunch kids", sub:"Para los que más quieres", price:"$120–160", unit:"MXN / lunch", desc:"Menús escolares sin azúcares añadidos ni ultraprocesados. Diseñados con criterio nutricional pediátrico. Lunes a viernes.", tag:"" },
+  { num:"03", name:"Lunch kids", sub:"Para los que más quieres", price:"$150–160", unit:"MXN / lunch", desc:"Menús escolares sin azúcares añadidos ni ultraprocesados. Diseñados con criterio nutricional pediátrico. Lunes a viernes.", tag:"" },
 ];
 
 const values = [
   { title:"Disciplina", desc:"Cada semana, sin excepción. La constancia es el ingrediente que más cuesta y más transforma." },
   { title:"Buenos hábitos", desc:"No vendemos dietas de 30 días. Construimos una relación diferente con lo que comes, a largo plazo." },
   { title:"Ciencia aplicada", desc:"Cada plan está respaldado por evidencia nutricional real, no por tendencias de Instagram." },
-  { title:"Calidad visible", desc:"Empaque al vacío, etiqueta completa, cocina certificada. El producto debe comunicar lo que promete antes de abrirse." },
+  { title:"Calidad visible", desc:"Etiqueta nutricional NOM-051, cocina certificada, empaque premium. El producto debe comunicar lo que promete antes de abrirse." },
 ];
 
 const medical = [
@@ -29,8 +29,8 @@ const upcoming = [
 const steps = [
   { n:"01", t:"Cuéntanos tu objetivo", b:"Llena nuestro formulario o escríbenos. Sin formularios interminables." },
   { n:"02", t:"Diseñamos tu plan", b:"En menos de 24h tienes tu propuesta. Si hay condición médica, el nutriólogo entra." },
-  { n:"03", t:"Lo cocinamos", b:"Chef profesional, cocina industrial certificada, empaque al vacío con etiqueta." },
-  { n:"04", t:"Llega a tu puerta", b:"Entrega semanal en Guadalajara. Solo tienes que calentar y comer." },
+  { n:"03", t:"Lo cocinamos", b:"Chef profesional, cocina industrial certificada, empaque premium con etiqueta nutricional NOM-051." },
+  { n:"04", t:"Llega a tu puerta", b:"Entrega semanal en Zapopan, Valle Real, Solares, Cd Granja y Bosques Vallarta. Solo calienta y come." },
 ];
 
 const testimonials = [
