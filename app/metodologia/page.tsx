@@ -211,7 +211,7 @@ export default function Metodologia() {
                 {[
                   { id:"P01", name:"Plan semanal estándar", tag:"Más popular", price:"$180–220", unit:"MXN/comida", target:"Profesionistas sin tiempo", moments:5, nutri:false, medical:false, desc:"Menú semanal elaborado por chef con revisión nutricional general. 5 momentos del día × 5 días. Etiqueta completa en cada envase. Sin consulta con nutriólogo incluida.", kpis:["Costo producción < $80 MXN","Margen bruto > 55%","NPS ≥ 8"] },
                   { id:"P02", name:"Plan personalizado + nutriólogo", tag:"Mayor impacto", price:"$250–350", unit:"MXN/comida", target:"Personas con objetivos específicos o condición médica", moments:5, nutri:true, medical:true, desc:"Consulta inicial con nutriólogo. Plan 100% clínico. Seguimiento mensual. Ajustes semanales según resultados.", kpis:["Consulta ≤ 60 min","Margen > 45%","Retención 3m > 70%"] },
-                  { id:"P03", name:"Lunch kids", tag:"Nuevo", price:"$120–160", unit:"MXN/lunch", target:"Mamás trabajadoras, hijos en edad escolar", moments:1, nutri:false, medical:false, desc:"Menú escolar lunes a viernes. Sin azúcares añadidos, sin ultraprocesados. Diseñado con nutriólogo pediátrico. Entrega antes de 7:30am.", kpis:["Entrega < 7:30am","Margen > 60%","Cancelación < 5%"] },
+                  { id:"P03", name:"Lunch kids", tag:"Nuevo", price:"$150–160", unit:"MXN/lunch", target:"Mamás trabajadoras, hijos en edad escolar", moments:1, nutri:false, medical:false, desc:"Menú escolar lunes a viernes. Sin azúcares añadidos, sin ultraprocesados. Diseñado con nutriólogo pediátrico. Entrega antes de 7:30am.", kpis:["Entrega < 7:30am","Margen > 30%","Cancelación < 5%"] },
                 ].map((plan, i) => (
                   <div key={plan.id} style={{ ...card, display: "grid", gridTemplateColumns: "64px 1fr auto", gap: "1.5rem", alignItems: "flex-start" }}>
                     <div>
@@ -279,7 +279,7 @@ export default function Metodologia() {
                   { step:"01", stage:"Adquisición", title:"Primer contacto", time:"Día 0", owner:"Adriana", channels:["Instagram","TikTok","WhatsApp","Sitio web"], action:"Cliente llena formulario o escribe por WhatsApp. Adriana responde en < 4 horas." },
                   { step:"02", stage:"Activación", title:"Evaluación + propuesta", time:"Día 1", owner:"Adriana + Nutriólogo", channels:["WhatsApp","Videollamada"], action:"Revisión del perfil. Si aplica plan médico, consulta con nutriólogo. Envío de propuesta y cotización personalizada en 24h." },
                   { step:"03", stage:"Conversión", title:"Diseño del plan y pago", time:"Día 2-3", owner:"Nutriólogo + Chef", channels:["Notion OS","Cocina"], action:"Nutriólogo diseña el plan. Chef recibe la ficha nutricional. Cliente paga primera semana. Se agenda la entrega." },
-                  { step:"04", stage:"Entrega", title:"Producción y primera semana", time:"Semana 1", owner:"Chef + Logística", channels:["Cocina industrial","Ruta de entrega"], action:"Preparación, empaque al vacío, etiquetado nutricional. Entrega en ventana acordada. WhatsApp de confirmación." },
+                  { step:"04", stage:"Entrega", title:"Producción y primera semana", time:"Semana 1", owner:"Chef + Logística", channels:["Cocina industrial","Ruta de entrega"], action:"Preparación, empaque premium NOM-051, etiquetado nutricional. Entrega en ventana acordada. WhatsApp de confirmación." },
                   { step:"05", stage:"Fidelización", title:"Seguimiento recurrente", time:"Cada semana", owner:"Adriana + Nutriólogo", channels:["WhatsApp","App Fase 2"], action:"Check-in semanal de Adriana. Ajustes de plan según resultados. Renovación automática salvo cancelación." },
                 ].map((s, i) => (
                   <div key={s.step} style={{ ...card, display: "grid", gridTemplateColumns: "56px 1fr auto", gap: "1.25rem", alignItems: "flex-start" }}>
@@ -345,7 +345,7 @@ export default function Metodologia() {
             <div style={grid3}>
               {[
                 { emoji:"👩‍💼", name:"Adriana Burgos", role:"Fundadora & Directora general", color: g.lime, desc:"La persona que cuida que todo funcione. Prueba cada menú antes de que salga. Coordina con el equipo. Es el primer y último punto de contacto con cada cliente.", resp:["Control de calidad del producto","Relación con clientes (onboarding y seguimiento)","Coordinación del equipo operativo","Redes sociales y contenido","Ventas y crecimiento"] },
-                { emoji:"👨‍🍳", name:"Chef profesional", role:"Director de cocina", color: g.gm, desc:"Formación culinaria formal. Opera la cocina industrial. Traduce las fichas nutricionales del nutriólogo en platillos reales con sabor y presentación.", resp:["Diseño y ejecución del menú semanal","Control de porciones y macros por receta","Supervisión del empaque al vacío","Gestión de inventario de insumos","Higiene y certificación de cocina"] },
+                { emoji:"👨‍🍳", name:"Chef profesional", role:"Director de cocina", color: g.gm, desc:"Formación culinaria formal. Opera la cocina industrial. Traduce las fichas nutricionales del nutriólogo en platillos reales con sabor y presentación.", resp:["Diseño y ejecución del menú semanal","Control de porciones y macros por receta","Supervisión del empaque premium y etiquetado","Gestión de inventario de insumos","Higiene y certificación de cocina"] },
                 { emoji:"👩‍⚕️", name:"Nutrióloga certificada", role:"Directora nutricional", color: g.gl, desc:"Especialista en nutrición clínica. Diseña todos los planes personalizados y supervisa los protocolos médicos. Es la garantía científica detrás de cada platillo.", resp:["Evaluación nutricional inicial de clientes","Diseño de planes personalizados por condición","Protocolos médicos (diabetes, cardiovascular, etc)","Seguimiento mensual de clientes con plan médico","Validación nutricional del menú estándar"] },
               ].map(p => (
                 <div key={p.name} style={{ ...card, borderTop: `3px solid ${p.color}` }}>
@@ -368,7 +368,7 @@ export default function Metodologia() {
             <div style={t.eyebrow}>Proveedores y partners clave</div>
             <div style={grid3}>
               {[
-                { cat:"Cocina", items:["Cocina industrial rentada (dark kitchen)","Proveedor de empaque al vacío certificado","Proveedor de etiquetas nutricionales"] },
+                { cat:"Cocina", items:["Cocina industrial rentada (dark kitchen)","Proveedor de empaque premium con capacidad NOM-051","Proveedor de etiquetas nutricionales"] },
                 { cat:"Ingredientes", items:["Mercado mayorista de temporada (lunes)","Proveedor de proteínas (carnes certificadas)","Proveedor de suplementos curados"] },
                 { cat:"Logística", items:["Repartidor propio o servicio de última milla","Hieleras térmicas certificadas para alimentos","App de coordinación de rutas"] },
               ].map(g3 => (
