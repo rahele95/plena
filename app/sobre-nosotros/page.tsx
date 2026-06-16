@@ -61,7 +61,7 @@ export default function SobreNosotros() {
               ["Disciplina","No vendemos dietas de 30 días. Construimos el hábito de comer bien, semana a semana, sin atajos."],
               ["Buenos hábitos","Cada plan está diseñado para que el cliente desarrolle una relación diferente con lo que come — no solo que cumpla un objetivo."],
               ["Ciencia aplicada","Detrás de cada platillo hay un nutriólogo, no una tendencia. La evidencia clínica es el punto de partida, no el marketing."],
-              ["Calidad visible","El producto debe comunicar lo que promete antes de abrirse: empaque al vacío, etiqueta completa, presentación impecable."],
+              ["Calidad visible","El producto debe comunicar lo que promete antes de abrirse: etiqueta nutricional NOM-051, empaque premium, presentación impecable."],
             ].map(([t, b], i) => (
               <div key={t} style={{ padding:"2.5rem", borderBottom:`0.5px solid ${C.rule}`, borderRight:i%2===0?`0.5px solid ${C.rule}`:"none" }}>
                 <div style={{ fontFamily:serif, fontSize:"1.3rem", fontWeight:400, color:C.night, marginBottom:"0.75rem" }}>{t}</div>
@@ -82,7 +82,7 @@ export default function SobreNosotros() {
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1.5rem" }}>
             {[
-              { emoji:"👩‍💼", name:"Adriana Burgos", role:"Fundadora & Dirección general", desc:"Cuida que todo funcione. Prueba cada menú antes de que salga. Primer y último punto de contacto con cada cliente." },
+              { emoji:"👩‍💼", name:"Adriana Burgos", role:"Fundadora & Dirección general", desc:"Fundó Plena para resolver lo que no encontró en el mercado: confianza real en lo que comes. Supervisa el estándar de calidad de cada plan." },
               { emoji:"👨‍🍳", name:"Chef profesional", role:"Dirección de cocina", desc:"Formación culinaria formal. Cocina industrial certificada. Traduce las fichas nutricionales en platillos que saben bien." },
               { emoji:"👩‍⚕️", name:"Nutrióloga certificada", role:"Dirección nutricional", desc:"Especialista en nutrición clínica. Diseña los planes personalizados y supervisa todos los protocolos médicos." },
             ].map(p => (
