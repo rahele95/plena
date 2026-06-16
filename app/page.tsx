@@ -75,14 +75,14 @@ export default function Home() {
               {/* Eyebrow */}
               <div style={{ display:"inline-flex", alignItems:"center", gap:"8px", border:`0.5px solid ${C.stone}`, borderRadius:"2px", padding:"5px 14px", marginBottom:"2rem" }}>
                 <span style={{ width:"5px", height:"5px", borderRadius:"50%", background:C.sage, flexShrink:0 }} />
-                <span style={{ fontFamily:sans, fontSize:"11px", color:C.stoneD, letterSpacing:"0.12em", textTransform:"uppercase" as const }}>Guadalajara · Entregas activas</span>
+                <span style={{ fontFamily:sans, fontSize:"11px", color:C.stoneD, letterSpacing:"0.12em", textTransform:"uppercase" as const }}>Zapopan, Valle Real, Solares, Cd Granja y Bosques Vallarta · Entregas activas</span>
               </div>
 
               <h1 style={{ fontFamily:serif, fontSize:"clamp(3rem,5.5vw,4.8rem)", fontWeight:300, lineHeight:1.05, color:C.ink, marginBottom:"1.5rem", letterSpacing:"-0.01em" }}>
                 Comer bien<br />no debería<br /><em style={{ color:C.nightL, fontStyle:"italic" }}>ser complicado.</em>
               </h1>
               <p style={{ fontFamily:sans, fontSize:"15px", lineHeight:1.8, color:C.inkS, marginBottom:"2.5rem", maxWidth:"400px" }}>
-                Planes de alimentación elaborados por chef profesional y nutriólogo certificado. Empacados al vacío. Entregados cada semana en tu puerta.
+                Planes de alimentación elaborados por chef profesional y nutriólogo certificado. Empaque premium con etiqueta nutricional NOM-051. Entregados cada semana en tu puerta.
               </p>
               <div style={{ display:"flex", gap:"12px", flexWrap:"wrap" as const }}>
                 <Link href="/contacto" style={{ fontFamily:sans, fontSize:"12px", fontWeight:500, padding:"13px 30px", background:C.night, color:C.linen, borderRadius:"2px", textDecoration:"none", letterSpacing:"0.04em" }}>

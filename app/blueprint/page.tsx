@@ -143,7 +143,7 @@ export default function Blueprint() {
               ["Etiqueta nutricional real", "Ningún servicio local incluye etiqueta nutricional completa en cada envase."],
               ["Planes por condición médica", "Diabetes, cardiovascular, pérdida de peso supervisada: nadie lo tiene."],
               ["Nutriólogo integrado", "Los servicios existentes no cuentan con respaldo clínico verificable."],
-              ["Empaque al vacío certificado", "La vida útil y seguridad alimentaria real no existen en el mercado local."],
+              ["Empaque premium con etiqueta NOM-051", "La vida útil y seguridad alimentaria real no existen en el mercado local."],
             ].map(([title, desc]) => (
               <div key={title} style={s.card}>
                 <p style={t.label}>{title}</p>
@@ -189,7 +189,7 @@ export default function Blueprint() {
                 {[
                   ["Semanal estándar", "$180–220 MXN", "~45–55%"],
                   ["Personalizado + nutriólogo", "$250–350 MXN", "~50–60%"],
-                  ["Lunch Kids", "$120–160 MXN", "~40–50%"],
+                  ["Lunch Kids", "$150–160 MXN", "~40–50%"],
                 ].map(([plan, precio, margen]) => (
                   <tr key={plan} style={{ borderBottom: `0.5px solid ${g.stone}30` }}>
                     <td style={{ fontFamily: g.sans, fontSize: "14px", color: g.ink2, padding: "10px 12px" }}>{plan}</td>
@@ -236,9 +236,9 @@ export default function Blueprint() {
               {
                 nombre: "Nutriólogo clínico",
                 rol: "Validación médica",
-                modelo: "Mismo esquema equity que Alan. Sin candidato aún.",
-                estado: "Gap crítico",
-                nota: "Sin nutriólogo los planes médicos son ilegalmente riesgosos. CUCS, UAG, UdG."
+                modelo: "Mismo esquema equity que Alan. Candidato real: Benjamín, nutriólogo de Adriana.",
+                estado: "En contacto",
+                nota: "Contactar Benjamín (nutriólogo de Adriana) — candidato real, trabaja independiente. Sin nutriólogo los planes médicos son ilegalmente riesgosos."
               },
             ].map(s2 => (
               <div key={s2.nombre} style={{ background: "white", border: `0.5px solid ${g.stone}`, borderRadius: "6px", padding: "1.25rem" }}>
@@ -266,7 +266,7 @@ export default function Blueprint() {
               { p: "🔴", g: "Constitución legal / RFC", d: "Persona física o SA de CV. Antes del primer cliente." },
               { p: "🔴", g: "Seguro de responsabilidad civil", d: "Alimentos + condiciones médicas = riesgo real." },
               { p: "🟡", g: "Logística de entrega", d: "Borzo / iVoy / repartidor propio. Definir antes del beta." },
-              { p: "🟡", g: "Proveedor empaque al vacío GDL", d: "Con certificación COFEPRIS." },
+              { p: "🟡", g: "Proveedor empaque premium GDL", d: "Con certificación COFEPRIS." },
               { p: "🟡", g: "Sistema de cobro", d: "Clip, Stripe o transferencia. Antes del beta." },
               { p: "🟡", g: "Fotografía de producto", d: "Sin foto de envases no hay conversión." },
               { p: "🟡", g: "NOM-051", d: "Etiquetado nutricional obligatorio en México. Rafael y Alan deben conocerlo." },

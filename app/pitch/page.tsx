@@ -19,7 +19,7 @@ export default function PitchIndex() {
           Nutrición con propósito.<br/>Hecho diferente.
         </h1>
         <p style={{fontFamily:g.sans,fontSize:"15px",lineHeight:1.85,color:g.ink3,maxWidth:"520px"}}>
-          Plena es el primer servicio de meal prep médico-nutricional de Guadalajara. Comida preparada con etiqueta nutricional completa, planes por condición de salud, chef certificado y nutriólogo integrado. Empacado al vacío. Entregado a tu puerta.
+          Plena es el primer servicio de meal prep médico-nutricional de Guadalajara. Comida preparada con etiqueta nutricional completa, planes por condición de salud, chef certificado y nutriólogo integrado. Empaque premium con etiqueta NOM-051. Entregado a tu puerta.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export default function PitchIndex() {
             {icon:"🏷️", t:"Etiqueta nutricional",  d:"Calorías, macros e ingredientes en cada envase."},
             {icon:"🩺", t:"Planes por condición",   d:"Diabetes, cardiovascular, control de peso, bienestar general."},
             {icon:"🧴", t:"Suplementación",         d:"Plan de suplementos basado en análisis de sangre del cliente."},
-            {icon:"📦", t:"Empaque al vacío",       d:"Vida útil extendida, higiene certificada, presentación premium."},
+            {icon:"📦", t:"Empaque premium NOM-051", d:"Vida útil extendida, higiene certificada, presentación premium."},
             {icon:"🚗", t:"Entrega a domicilio",    d:"Zapopan, Valle Real, Solares, Cd Granja, Bosques Vallarta. Entrega semanal."},
           ].map((item,i)=>(
             <div key={i} style={{background:"white",border:`0.5px solid ${g.stone}`,borderRadius:"6px",padding:"1rem"}}>
@@ -73,7 +73,7 @@ export default function PitchIndex() {
         <div style={{display:"flex",flexDirection:"column" as const,gap:"6px"}}>
           {[
             "5M de personas en GDL. Mercado no atendido con rigor médico.",
-            "Competidores locales sin etiqueta nutricional, sin empaque al vacío, sin respaldo clínico.",
+            "Competidores locales sin etiqueta nutricional, sin empaque premium, sin respaldo clínico.",
             "ModifyHealth (EUA) factura millones con este modelo. México está virgen.",
             "Nombre neutro. Visión de franquicia. Esto no se queda en GDL.",
           ].map((item,i)=>(
@@ -101,7 +101,7 @@ export default function PitchIndex() {
               {[
                 ["Semanal estándar","Comida semanal con etiqueta nutricional completa","$180–220 MXN"],
                 ["Médico personalizado","Por condición: diabetes, cardiovascular, control de peso","$250–350 MXN"],
-                ["Lunch Kids","Almuerzo escolar saludable con control nutricional","$120–160 MXN"],
+                ["Lunch Kids","Almuerzo escolar saludable con control nutricional","$150–160 MXN"],
                 ["Suplementación","Plan mensual con análisis de sangre. Revenue stream activo desde Mes 2","$TBD con nutriólogo"],
               ].map(([plan,desc,precio],i)=>(
                 <tr key={i} style={{borderBottom:`0.5px solid ${g.stone}20`}}>

@@ -188,7 +188,7 @@ export default function Metodologia() {
               <Divider />
               <div style={t.eyebrow}>El gap de mercado — Lo que Plena tiene que nadie más</div>
               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                {["Etiqueta nutricional completa en cada envase","Planes por condición médica (diabetes, corazón)","Nutriólogo integrado en el servicio","Empaque al vacío de calidad exportación","App de pedidos + perfil de cliente (Fase 2)","Suplementación basada en análisis de sangre","Cocina industrial certificada","Protocolo de trazabilidad por lote"].map(g2 => (
+                {["Etiqueta nutricional completa en cada envase","Planes por condición médica (diabetes, corazón)","Nutriólogo integrado en el servicio","Empaque premium NOM-051 de calidad exportación","App de pedidos + perfil de cliente (Fase 2)","Suplementación basada en análisis de sangre","Cocina industrial certificada","Protocolo de trazabilidad por lote"].map(g2 => (
                   <div key={g2} style={{ display: "flex", gap: 6, alignItems: "center", padding: "8px 14px", background: "rgba(168,217,74,0.07)", border: "0.5px solid rgba(168,217,74,0.2)", borderRadius: 10 }}>
                     <span style={{ color: "#a8c4a0", fontSize: 12 }}>✓</span>
                     <span style={{ fontFamily: g.sans, fontSize: "12px", color: g.ink2 }}>{g2}</span>
@@ -211,7 +211,7 @@ export default function Metodologia() {
                 {[
                   { id:"P01", name:"Plan semanal estándar", tag:"Más popular", price:"$180–220", unit:"MXN/comida", target:"Profesionistas sin tiempo", moments:5, nutri:false, medical:false, desc:"Menú semanal elaborado por chef con revisión nutricional general. 5 momentos del día × 5 días. Etiqueta completa en cada envase. Sin consulta con nutriólogo incluida.", kpis:["Costo producción < $80 MXN","Margen bruto > 55%","NPS ≥ 8"] },
                   { id:"P02", name:"Plan personalizado + nutriólogo", tag:"Mayor impacto", price:"$250–350", unit:"MXN/comida", target:"Personas con objetivos específicos o condición médica", moments:5, nutri:true, medical:true, desc:"Consulta inicial con nutriólogo. Plan 100% clínico. Seguimiento mensual. Ajustes semanales según resultados.", kpis:["Consulta ≤ 60 min","Margen > 45%","Retención 3m > 70%"] },
-                  { id:"P03", name:"Lunch kids", tag:"Nuevo", price:"$150–160", unit:"MXN/lunch", target:"Mamás trabajadoras, hijos en edad escolar", moments:1, nutri:false, medical:false, desc:"Menú escolar lunes a viernes. Sin azúcares añadidos, sin ultraprocesados. Diseñado con nutriólogo pediátrico. Entrega antes de 7:30am.", kpis:["Entrega < 7:30am","Margen > 30%","Cancelación < 5%"] },
+                  { id:"P03", name:"Lunch kids", tag:"Nuevo", price:"$150–160", unit:"MXN/lunch", target:"Mamás trabajadoras, hijos en edad escolar", moments:1, nutri:false, medical:false, desc:"Menú escolar lunes a viernes. Sin azúcares añadidos, sin ultraprocesados. Diseñado con nutriólogo pediátrico. Entrega lunes en ventana 7am–5pm.", kpis:["Entrega lunes 7am–5pm","Margen > 30%","Cancelación < 5%"] },
                 ].map((plan, i) => (
                   <div key={plan.id} style={{ ...card, display: "grid", gridTemplateColumns: "64px 1fr auto", gap: "1.5rem", alignItems: "flex-start" }}>
                     <div>
@@ -315,7 +315,7 @@ export default function Metodologia() {
                 {[
                   { day:"Dom", title:"Planificación", tasks:["Confirmar pedidos de la semana","Chef define menú por fichas nutricionales","Orden de compra a proveedores","Coordinar logística de entregas"] },
                   { day:"Lun", title:"Compras", tasks:["Compra de insumos frescos","Verificación de calidad de ingredientes","Mise en place: cortes y marinados","Preparación de bases"] },
-                  { day:"Mar-Mié", title:"Producción", tasks:["Cocción de todos los platillos","Control de temperatura y tiempos","Empaque al vacío por porción","Etiquetado: cliente, comida, macros"] },
+                  { day:"Mar-Mié", title:"Producción", tasks:["Cocción de todos los platillos","Control de temperatura y tiempos","Empaque premium por porción","Etiquetado: cliente, comida, macros"] },
                   { day:"Jue-Vie", title:"Entregas", tasks:["Clasificación por ruta","Verificación de pedidos","Entrega en ventana acordada","Check-in post-entrega"] },
                   { day:"Sáb", title:"Retrospectiva", tasks:["Revisión de feedback semanal","Ajustes de recetas","Seguimiento de KPIs","Check-in con clientes activos"] },
                 ].map(d => (
@@ -544,7 +544,7 @@ export default function Metodologia() {
               <div style={grid3}>
                 {[
                   { n:"01", title:"Ciencia detrás de cada plato", desc:"Cada comida tiene propósito. Las etiquetas no son decoración — son el producto. El nutriólogo no es un add-on, es la propuesta central." },
-                  { n:"02", title:"Calidad visible", desc:"Empaque al vacío, etiquetado profesional, cocina certificada. El producto debe comunicar que esto no es comida de tupper casero." },
+                  { n:"02", title:"Calidad visible", desc:"Empaque premium, etiquetado nutricional NOM-051, cocina certificada. El producto debe comunicar que esto no es comida de tupper casero." },
                   { n:"03", title:"Personalización real", desc:"Cuando Plena dice personalizado, significa que el nutriólogo revisó el caso. No elegir entre 3 menús de un catálogo." },
                   { n:"04", title:"Adriana como garantía", desc:"No es chef ni nutrióloga — es quien cuida que todo salga bien. Prueba todo antes de que llegue a tu puerta." },
                   { n:"05", title:"Sistema, no producto suelto", desc:"Plan + comida + suplemento + seguimiento. La app y el perfil son parte del producto, no solo canal de venta." },
@@ -712,7 +712,7 @@ export default function Metodologia() {
             <div style={wrap}>
               <div style={t.eyebrow}>Estrategia de redes sociales</div>
               <h2 style={t.h2}>La comida vende sola.<br />Adriana la hace creíble.</h2>
-              <p style={{ ...t.p, maxWidth: 620, marginBottom: "2.5rem" }}>El contenido de Plena tiene ventaja natural: el producto es visualmente atractivo. El principio central: no hay salto al vacío. La transición de persona privada a figura pública es gradual y sin ansiedad.</p>
+              <p style={{ ...t.p, maxWidth: 620, marginBottom: "2.5rem" }}>El contenido de Plena tiene ventaja natural: el producto es visualmente atractivo. El principio central: no hay saltos bruscos. La transición de persona privada a figura pública es gradual y sin ansiedad.</p>
 
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
                 {[

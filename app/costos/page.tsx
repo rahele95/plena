@@ -360,7 +360,7 @@ export default function CostosV2() {
                   nota:"$25–35 F1, renegociar a 150+/sem" },
                 { label:"Chef Alan (por comida)",   val:comAlan,   set:setComAlan,   min:5,  max:30,
                   nota:"$10 Etapa 1, +8% utilidad aparte" },
-                { label:"Empaque al vacío",         val:comEmpaque,set:setComEmpaque,min:6,  max:20,
+                { label:"Empaque premium",          val:comEmpaque,set:setComEmpaque,min:6,  max:20,
                   nota:"Pendiente proveedor GDL" },
                 { label:"Logística / delivery",     val:comLogist, set:setComLogist, min:8,  max:45,
                   nota:"Promedio ZMG. Varía por zona" },

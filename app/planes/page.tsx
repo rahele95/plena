@@ -32,7 +32,7 @@ export default function Planes() {
             <h2 style={{ fontFamily:serif, fontSize:"2rem", fontWeight:300, color:C.ink, marginBottom:"1rem", lineHeight:1.2 }}>Plan semanal</h2>
             <p style={{ fontFamily:sans, fontSize:"14px", lineHeight:1.8, color:C.inkS, marginBottom:"1.5rem" }}>5 momentos del día, 5 días a la semana. Menú elaborado semanalmente por nuestro chef con ingredientes frescos y de temporada. Cada envase con etiqueta nutricional completa.</p>
             <div style={{ marginBottom:"1.5rem" }}>
-              {["Desayuno incluido","Colación mañana","Comida completa","Colación tarde","Cena balanceada","Envase al vacío","Etiqueta nutricional","Entrega semanal"].map(f => (
+              {["Desayuno incluido","Colación mañana","Comida completa","Colación tarde","Cena balanceada","Empaque premium","Etiqueta nutricional","Entrega semanal"].map(f => (
                 <div key={f} style={{ display:"flex", gap:"8px", alignItems:"center", marginBottom:"6px" }}>
                   <span style={{ color:C.sage, flexShrink:0, fontSize:"12px" }}>→</span>
                   <span style={{ fontFamily:sans, fontSize:"13px", color:C.inkM }}>{f}</span>
@@ -102,7 +102,7 @@ export default function Planes() {
             <div style={{ display:"inline-block", fontFamily:sans, fontSize:"10px", letterSpacing:"0.12em", textTransform:"uppercase" as const, padding:"3px 12px", border:`0.5px solid ${C.stoneD}`, borderRadius:"2px", marginBottom:"1.5rem", color:C.stoneD }}>Plan 03 · Para familias</div>
             <h2 style={{ fontFamily:serif, fontSize:"2rem", fontWeight:300, color:C.ink, marginBottom:"1rem", lineHeight:1.2 }}>El mejor lunch<br />sin el estrés de cocinarlo.</h2>
             <p style={{ fontFamily:sans, fontSize:"14px", lineHeight:1.8, color:C.inkS, marginBottom:"1.5rem" }}>Menús escolares sin azúcares añadidos ni ultraprocesados. Diseñados con criterio nutricional pediátrico. Los niños comen bien, tú tienes una preocupación menos.</p>
-            <div style={{ fontFamily:serif, fontSize:"2.5rem", fontWeight:300, color:C.night, marginBottom:"1.5rem" }}>$120–160 <span style={{ fontFamily:sans, fontSize:"14px", fontWeight:400, color:C.stoneD }}>MXN / lunch</span></div>
+            <div style={{ fontFamily:serif, fontSize:"2.5rem", fontWeight:300, color:C.night, marginBottom:"1.5rem" }}>$150–160 <span style={{ fontFamily:sans, fontSize:"14px", fontWeight:400, color:C.stoneD }}>MXN / lunch</span></div>
             <Link href="/contacto" style={{ fontFamily:sans, fontSize:"12px", fontWeight:500, padding:"12px 28px", background:C.night, color:C.linen, borderRadius:"2px", textDecoration:"none", letterSpacing:"0.04em" }}>Pedir para mis hijos</Link>
           </div>
         </div>

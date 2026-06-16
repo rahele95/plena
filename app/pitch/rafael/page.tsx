@@ -34,7 +34,7 @@ export default function PitchRafael() {
         {[
           "No existe meal prep con etiqueta nutricional completa en GDL",
           "No hay planes certificados para diabetes, cardiovascular o pérdida de peso",
-          "Ningún competidor local tiene empaque al vacío + nutriólogo integrado",
+          "Ningún competidor local tiene empaque premium + nutriólogo integrado",
         ].map((item, i) => (
           <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
             <span style={{ color: g.sage, fontSize: "16px", lineHeight: "1.6", flexShrink: 0 }}>—</span>
